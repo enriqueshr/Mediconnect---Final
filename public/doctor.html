@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Doctor Panel — MediConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<style>
+body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sidebar-logo{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.sidebar-logo a{font-family:'Lora',serif;font-size:1.2rem;font-weight:600;color:var(--primary);text-decoration:none}
+.sidebar-logo a span{color:var(--accent)}
+.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto}
+.sidebar-link{display:flex;align-items:center;gap:.75rem;padding:.65rem 1.5rem;font-size:.875rem;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s;text-decoration:none;border:none;background:none;width:100%;font-family:inherit}
+.sidebar-link:hover,.sidebar-link.active{color:var(--primary);background:var(--primary-light)}
+.sidebar-link .icon{font-size:1.1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:1rem 1.5rem;border-top:1px solid var(--border)}
+.doc-chip{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.content{padding:2rem;flex:1}
+.page{display:none}.page.active{display:block}
+.panel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.panel-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.panel-stat-val{font-size:1.8rem;font-weight:700;color:var(--primary)}
+.panel-stat-label{font-size:.8rem;color:var(--text2);margin-top:.25rem}
+.panel-stat-trend{font-size:.75rem;color:var(--success);margin-top:.2rem}
+.online-toggle{display:flex;align-items:center;gap:.5rem;font-size:.83rem;font-weight:500}
+.toggle-switch{position:relative;width:40px;height:22px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:22px;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-switch input:checked + .toggle-slider{background:var(--success)}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(18px)}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo"><a href="/">Medi<span>Connect</span></a><div style="font-size:.72rem;color:var(--text3);margin-top:.15rem">Doctor Panel</div></div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-link active" onclick="showPanel('dashboard')"><span class="icon">📊</span> Dashboard</button>
+    <button class="sidebar-link" onclick="showPanel('appointments')"><span class="icon">📅</span> Appointments</button>
+    <button class="sidebar-link" onclick="showPanel('patients')"><span class="icon">👥</span> Patients</button>
+    <button class="sidebar-link" onclick="showPanel('messages')"><span class="icon">💬</span> Messages <span id="side-unread" style="display:none;background:var(--danger);color:#fff;border-radius:10px;padding:0 6px;font-size:.7rem;margin-left:auto"></span></button>
+    <button class="sidebar-link" onclick="showPanel('schedule')"><span class="icon">🗓️</span> Schedule</button>
+    <button class="sidebar-link" onclick="showPanel('profile')"><span class="icon">👨‍⚕️</span> My Profile</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="online-toggle">
+      <label class="toggle-switch">
+        <input type="checkbox" id="online-toggle" onchange="toggleOnlineStatus(this.checked)"/>
+        <span class="toggle-slider"></span>
+      </label>
+      <span id="online-label">Offline</span>
+    </div>
+    <div style="margin-top:.75rem;display:flex;gap:.5rem">
+      <a href="/" class="btn btn-outline btn-sm" style="flex:1;justify-content:center">🏠 Home</a>
+      <button class="btn btn-outline btn-sm" onclick="doLogout()" style="color:var(--danger)">🚪</button>
+    </div>
+    <div style="margin-top:.75rem;font-size:.72rem;color:var(--text3)">
+      <a href="/privacy.html" style="color:var(--text3);text-decoration:none">Privacy Policy</a>
+      ·
+      <a href="/terms.html" style="color:var(--text3);text-decoration:none">Terms of Service</a>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div id="topbar-title" style="font-weight:600;font-size:1rem">Dashboard</div>
+    <div id="topbar-user" style="font-size:.85rem;color:var(--text2)">Loading...</div>
+  </div>
+  <div class="content">
+
+    <!-- ─── DASHBOARD ─── -->
+    <div class="page active" id="panel-dashboard">
+      <div class="panel-grid" id="dash-stats">
+        <div class="panel-stat"><div class="panel-stat-val" id="ds-today">—</div><div class="panel-stat-label">Today's Appointments</div></div>
+        <div class="panel-stat"><div class="panel-stat-val" id="ds-total">—</div><div class="panel-stat-label">Total Appointments</div></div>
+        <div class="panel-stat"><div class="panel-stat-val" id="ds-patients">—</div><div class="panel-stat-label">Unique Patients</div></div>
+        <div class="panel-stat"><div class="panel-stat-val" id="ds-rating">—</div><div class="panel-stat-label">My Rating</div></div>
+        <div class="panel-stat" style="border-left:3px solid var(--success)"><div class="panel-stat-val" id="ds-revenue" style="color:var(--success)">—</div><div class="panel-stat-label">Total Revenue (Rs.)</div><div class="panel-stat-trend" id="ds-completed">— completed</div></div>
+        <div class="panel-stat" style="border-left:3px solid var(--accent)"><div class="panel-stat-val" id="ds-month-rev" style="color:var(--accent)">—</div><div class="panel-stat-label">This Month (Rs.)</div><div class="panel-stat-trend" id="ds-avg-fee">Avg fee: —</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div>
+          <div class="section-title">Today's Appointments</div>
+          <div id="today-appts" style="display:flex;flex-direction:column;gap:.75rem"><div class="spinner"></div></div>
+        </div>
+        <div>
+          <div class="section-title">Recent Patients</div>
+          <div id="recent-patients" style="display:flex;flex-direction:column;gap:.75rem"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── APPOINTMENTS ─── -->
+    <div class="page" id="panel-appointments">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+        <div><div class="page-title">Appointments</div><div class="page-subtitle">Manage all patient appointments</div></div>
+        <div style="display:flex;gap:.5rem">
+          <select class="form-input" id="appt-status-filter" onchange="loadAppts()" style="width:140px">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table id="appt-table">
+            <thead><tr><th>Ref</th><th>Patient</th><th>Date</th><th>Time</th><th>Type</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appt-tbody"><tr><td colspan="9" style="text-align:center;padding:2rem">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PATIENTS ─── -->
+    <div class="page" id="panel-patients">
+      <div class="page-header"><div class="page-title">My Patients</div><div class="page-subtitle">All patients you've seen</div></div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table id="patients-table">
+            <thead><tr><th>Patient</th><th>Phone</th><th>Last Visit</th><th>Appointments</th><th>Actions</th></tr></thead>
+            <tbody id="patients-tbody"><tr><td colspan="5" style="text-align:center;padding:2rem">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── MESSAGES ─── -->
+    <div class="page" id="panel-messages">
+      <div class="page-title" style="margin-bottom:1rem">Messages</div>
+      <div class="chat-layout">
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-header">Patient Conversations</div>
+          <div class="chat-list" id="doc-chat-list"><div class="spinner" style="margin:1rem auto"></div></div>
+        </div>
+        <div class="chat-main" id="doc-chat-main">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3)">
+            <div style="font-size:3rem;margin-bottom:1rem">💬</div>
+            <div>Select a conversation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SCHEDULE ─── -->
+    <div class="page" id="panel-schedule">
+      <div class="page-header"><div class="page-title">My Schedule</div><div class="page-subtitle">View your availability slots</div></div>
+      <div id="schedule-view"><div class="spinner"></div></div>
+    </div>
+
+    <!-- ─── PROFILE ─── -->
+    <div class="page" id="panel-profile">
+      <div class="page-header"><div class="page-title">My Profile</div></div>
+      <div style="display:grid;grid-template-columns:340px 1fr;gap:1.5rem">
+        <div class="card card-lg" id="profile-view"><div class="spinner"></div></div>
+        <div>
+          <div class="card card-lg" style="margin-bottom:1rem">
+            <div style="font-weight:600;margin-bottom:1rem">Update Profile</div>
+            <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="update-bio" rows="4"></textarea></div>
+            <div class="form-group"><label class="form-label">Consultation Fee (Rs.)</label><input class="form-input" id="update-fee" type="number"/></div>
+            <div class="form-group"><label class="form-label">Primary Hospital</label><input class="form-input" id="update-hospital"/></div>
+            <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+          </div>
+          <div class="card card-lg">
+            <div style="font-weight:600;margin-bottom:1rem">Change Password</div>
+            <div class="form-group"><label class="form-label">Current Password</label><input class="form-input" id="old-pass" type="password"/></div>
+            <div class="form-group"><label class="form-label">New Password</label><input class="form-input" id="new-pass" type="password"/></div>
+            <button class="btn btn-outline" onclick="changePassword()">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Notes modal -->
+<div class="modal-overlay" id="notes-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header"><div class="modal-title">📋 Clinical Note for Patient</div><button class="modal-close" onclick="closeModal('notes-modal')">×</button></div>
+    <input type="hidden" id="notes-appt-id"/>
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.65rem .85rem;margin-bottom:1rem;font-size:.8rem;color:#166534">
+      ℹ️ This note will be visible to the patient in their appointment history.
+    </div>
+    <div class="form-group">
+      <label class="form-label">Diagnosis / Findings</label>
+      <textarea class="form-input" id="notes-text" rows="5" placeholder="Enter diagnosis, examination findings, treatment plan, follow-up instructions..."></textarea>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveNotes()">💾 Save Clinical Note</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/chat.js"></script>
+<script src="/js/webrtc.js"></script>
+<script>
+let doctorProfile = null;
+let doctorRecord  = null;
+let chatOtherId   = null;
+
+// ─── Auth Guard ───────────────────────────────────────────────────────────────
+async function guardAndInit() {
+  const token = Auth.getToken();
+  const user  = Auth.getUser();
+  if (!token || !user || user.role !== 'doctor') {
+    window.location.href = '/';
+    return;
+  }
+  document.getElementById('topbar-user').textContent = user.name;
+
+  try {
+    const data = await API.me();
+    doctorProfile = data.user;
+    doctorRecord  = data.doctor;
+
+    if (doctorRecord) {
+      document.getElementById('online-toggle').checked = !!doctorRecord.online_status;
+      document.getElementById('online-label').textContent = doctorRecord.online_status ? 'Online' : 'Offline';
+    }
+
+    initChat(token, user);
+    WebRTCCall.init(Chat.socket, user);
+    Chat.onMessage = onNewMessage;
+    loadDashboard();
+    pollUnread();
+  } catch { window.location.href = '/'; }
+}
+
+// ─── Panel navigation ─────────────────────────────────────────────────────────
+function showPanel(p) {
+  document.querySelectorAll('.page').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(e => e.classList.remove('active'));
+  document.getElementById('panel-' + p)?.classList.add('active');
+  const links = document.querySelectorAll('.sidebar-link');
+  const map   = { dashboard:0, appointments:1, patients:2, messages:3, schedule:4, profile:5 };
+  if (map[p] !== undefined) links[map[p]]?.classList.add('active');
+  document.getElementById('topbar-title').textContent = p.charAt(0).toUpperCase() + p.slice(1);
+
+  if (p === 'appointments') loadAppts();
+  if (p === 'patients')     loadPatients();
+  if (p === 'messages')     loadDocConversations();
+  if (p === 'schedule')     loadSchedule();
+  if (p === 'profile')      loadProfile();
+}
+
+function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─── Dashboard ────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const appts = await API.appointments();
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    const todayAppts = appts.filter(a => a.appointment_date === todayStr);
+    const uniquePats = new Set(appts.map(a => a.patient_id)).size;
+
+    // Revenue calculations
+    const completed   = appts.filter(a => a.status === 'completed');
+    const totalRev    = completed.reduce((s, a) => s + (a.final_fee || 0), 0);
+    const now         = new Date();
+    const monthRev    = completed.filter(a => {
+      const d = new Date(a.appointment_date);
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    }).reduce((s, a) => s + (a.final_fee || 0), 0);
+    const avgFee      = completed.length ? Math.round(totalRev / completed.length) : 0;
+
+    document.getElementById('ds-today').textContent    = todayAppts.length;
+    document.getElementById('ds-total').textContent    = appts.length;
+    document.getElementById('ds-patients').textContent = uniquePats;
+    document.getElementById('ds-rating').textContent   = doctorRecord?.rating || '—';
+    document.getElementById('ds-revenue').textContent  = totalRev.toLocaleString();
+    document.getElementById('ds-completed').textContent= completed.length + ' completed';
+    document.getElementById('ds-month-rev').textContent= monthRev.toLocaleString();
+    document.getElementById('ds-avg-fee').textContent  = 'Avg fee: Rs.' + avgFee;
+
+    // Today's appointments
+    const todayEl = document.getElementById('today-appts');
+    const todayList = appts.filter(a => a.status === 'confirmed').slice(0, 5);
+    if (!todayList.length) { todayEl.innerHTML = '<div style="font-size:.83rem;color:var(--text3)">No confirmed appointments</div>'; }
+    else { todayEl.innerHTML = todayList.map(a => apptMini(a)).join(''); }
+
+    // Recent patients
+    const recEl   = document.getElementById('recent-patients');
+    const recents = appts.slice(0, 5);
+    if (!recents.length) { recEl.innerHTML = '<div style="font-size:.83rem;color:var(--text3)">No patients yet</div>'; }
+    else { recEl.innerHTML = recents.map(a => `
+      <div class="card" style="display:flex;gap:.75rem;align-items:center;padding:.75rem 1rem">
+        <div style="width:36px;height:36px;background:var(--primary-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">👤</div>
+        <div style="flex:1">
+          <div style="font-size:.85rem;font-weight:500">${a.patient_name}</div>
+          <div style="font-size:.75rem;color:var(--text3)">${a.appointment_date} • ${a.time_slot}</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openDocChat(${a.patient_id},'${a.patient_name}')">💬</button>
+      </div>
+    `).join(''); }
+  } catch (e) { console.error(e); }
+}
+
+function apptMini(a) {
+  return `<div class="card" style="padding:.75rem 1rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem">
+      <div style="font-size:.85rem;font-weight:500">${a.patient_name}</div>
+      <span class="badge badge-${a.status}" style="font-size:.7rem">${a.status}</span>
+    </div>
+    <div style="font-size:.75rem;color:var(--text2)">${a.appointment_date} • ${a.time_slot} • ${a.type === 'video' ? '📹' : '🏥'}</div>
+    <div style="display:flex;gap:.4rem;margin-top:.5rem">
+      ${a.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="updateStatus(${a.id},'confirmed')">✓ Confirm</button>` : ''}
+      ${a.status === 'confirmed' ? `<button class="btn btn-outline btn-sm" onclick="updateStatus(${a.id},'completed')">✓ Complete</button>` : ''}
+      <button class="btn btn-outline btn-sm" onclick="openNotesModal(${a.id})">📝 Notes</button>
+      <button class="btn btn-outline btn-sm" onclick="openDocChat(${a.patient_id},'${a.patient_name}')">💬</button>
+    </div>
+  </div>`;
+}
+
+// ─── Appointments table ────────────────────────────────────────────────────────
+async function loadAppts() {
+  const status = document.getElementById('appt-status-filter').value;
+  const params = status ? { status } : {};
+  try {
+    const appts = await API.appointments(params);
+    const tbody = document.getElementById('appt-tbody');
+    if (!appts.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text3)">No appointments found</td></tr>'; return; }
+    tbody.innerHTML = appts.map(a => `
+      <tr>
+        <td style="font-family:monospace;font-size:.75rem">${a.ref}</td>
+        <td><div style="font-weight:500">${a.patient_name}</div><div style="font-size:.72rem;color:var(--text3)">${a.patient_phone||'—'}</div></td>
+        <td>${a.appointment_date}</td>
+        <td>${a.time_slot}</td>
+        <td>${a.type === 'video' ? '📹 Video' : '🏥 Physical'}</td>
+        <td>Rs.${a.final_fee}</td>
+        <td><span class="badge ${a.payment_status==='completed'?'badge-confirmed':'badge-pending'}">${a.payment_status}</span></td>
+        <td><span class="badge badge-${a.status}">${a.status}</span></td>
+        <td>
+          <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+            ${a.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="updateStatus(${a.id},'confirmed')">Confirm</button>` : ''}
+            ${a.status === 'confirmed' ? `<button class="btn btn-outline btn-sm" onclick="updateStatus(${a.id},'completed')">Complete</button>` : ''}
+            ${a.status !== 'cancelled' && a.status !== 'completed' ? `<button class="btn btn-outline btn-sm" style="color:var(--danger)" onclick="updateStatus(${a.id},'cancelled')">Cancel</button>` : ''}
+            <button class="btn btn-outline btn-sm" onclick="openNotesModal(${a.id},'${(a.notes||'').replace(/'/g,'')}')">📝</button>
+            <button class="btn btn-outline btn-sm" onclick="openDocChat(${a.patient_id},'${a.patient_name}')">💬</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function updateStatus(id, status) {
+  try {
+    await API.updateApptStatus(id, status);
+    showToast('Status updated to ' + status, 'success');
+    loadAppts();
+    loadDashboard();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+function openNotesModal(apptId, existing = '') {
+  document.getElementById('notes-appt-id').value = apptId;
+  document.getElementById('notes-text').value     = existing;
+  openModal('notes-modal');
+}
+async function saveNotes() {
+  const id    = document.getElementById('notes-appt-id').value;
+  const notes = document.getElementById('notes-text').value;
+  try {
+    await API.saveNotes(id, notes);
+    closeModal('notes-modal');
+    showToast('Notes saved', 'success');
+    loadAppts();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Patients ─────────────────────────────────────────────────────────────────
+async function loadPatients() {
+  try {
+    const appts = await API.appointments();
+    const pMap  = new Map();
+    for (const a of appts) {
+      if (!pMap.has(a.patient_id)) pMap.set(a.patient_id, { ...a, count: 0 });
+      pMap.get(a.patient_id).count++;
+    }
+    const patients = [...pMap.values()];
+    const tbody = document.getElementById('patients-tbody');
+    if (!patients.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text3)">No patients yet</td></tr>'; return; }
+    tbody.innerHTML = patients.map(p => `
+      <tr>
+        <td><div style="font-weight:500">${p.patient_name}</div></td>
+        <td>${p.patient_phone||'—'}</td>
+        <td>${p.appointment_date} • ${p.time_slot}</td>
+        <td>${p.count}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="openDocChat(${p.patient_id},'${p.patient_name}')">💬 Message</button></td>
+      </tr>
+    `).join('');
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Messages / Chat ──────────────────────────────────────────────────────────
+async function loadDocConversations() {
+  const listEl = document.getElementById('doc-chat-list');
+  try {
+    const convos = await API.conversations();
+    if (!convos.length) { listEl.innerHTML = '<div style="padding:1rem;font-size:.83rem;color:var(--text3)">No conversations yet</div>'; return; }
+    listEl.innerHTML = convos.map(c => `
+      <div class="chat-convo ${chatOtherId === c.other_id ? 'active' : ''}" onclick="openDocChat(${c.other_id},'${c.other_name}')">
+        <div class="chat-convo-avatar">👤</div>
+        <div style="flex:1;min-width:0">
+          <div class="chat-convo-name">${c.other_name}</div>
+          <div class="chat-convo-preview">${c.last_message||'...'}</div>
+        </div>
+        ${c.unread_count > 0 ? `<div class="unread-dot">${c.unread_count}</div>` : ''}
+      </div>
+    `).join('');
+  } catch (e) { showToast('Could not load conversations', 'error'); }
+}
+
+async function openDocChat(userId, name) {
+  chatOtherId = Number(userId);
+  const user  = Auth.getUser();
+  document.getElementById('doc-chat-main').innerHTML = `
+    <div class="chat-header">
+      <div class="chat-convo-avatar">👤</div>
+      <div style="flex:1"><div style="font-weight:600;font-size:.9rem">${name}</div><div id="chat-status" style="font-size:.75rem;color:var(--text3)">Patient</div></div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','👤','audio')" style="padding:.35rem .6rem;font-size:.85rem">🎵</button>
+        <button class="btn btn-primary btn-sm" title="Video Call"  onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','👤','video')" style="padding:.35rem .6rem;font-size:.85rem">📹</button>
+      </div>
+    </div>
+    <div class="chat-messages" id="doc-chat-msgs"><div class="spinner"></div></div>
+    <div class="typing-indicator" id="typing-indicator"></div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="doc-chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendDocMsg();event.preventDefault()}" oninput="if(Chat)Chat.emitTyping(chatOtherId)"/>
+      <button class="chat-send" onclick="sendDocMsg()">▶</button>
+    </div>
+  `;
+  const msgsEl = document.getElementById('doc-chat-msgs');
+  try {
+    const msgs = await API.messages(userId);
+    if (!msgs.length) msgsEl.innerHTML = '<div class="empty-state" style="padding:2rem">No messages yet</div>';
+    else { msgsEl.innerHTML = msgs.map(m => renderMessage(m, user.id)).join(''); scrollChatToBottom(msgsEl); }
+    if (Chat) { Chat.markRead(userId); Chat.activeConvo = chatOtherId; }
+  } catch (e) { if (msgsEl) msgsEl.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text3)">Failed to load messages</div>'; }
+  loadDocConversations();
+}
+
+function sendDocMsg() {
+  const inp = document.getElementById('doc-chat-input');
+  const txt = inp.value.trim();
+  if (!txt || !chatOtherId) return;
+  inp.value = '';
+  const sent = Chat?.send(chatOtherId, txt);
+  if (!sent) {
+    API.sendMsg(chatOtherId, txt).then(msg => {
+      const el = document.getElementById('doc-chat-msgs');
+      if (el) { el.innerHTML += renderMessage(msg, Auth.getUser().id); scrollChatToBottom(el); }
+    });
+  }
+}
+
+function onNewMessage(msg) {
+  const user = Auth.getUser();
+  const el   = document.getElementById('doc-chat-msgs');
+  if (el && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
+    const empty = el.querySelector('.empty-state');
+    if (empty) empty.remove();
+    el.innerHTML += renderMessage(msg, user.id);
+    scrollChatToBottom(el);
+    if (msg.sender_id === chatOtherId && Chat) Chat.markRead(chatOtherId);
+  }
+  if (msg.sender_id !== user.id) { loadDocConversations(); pollUnread(); }
+}
+
+// ─── Schedule ─────────────────────────────────────────────────────────────────
+async function loadSchedule() {
+  if (!doctorRecord) return;
+  const el = document.getElementById('schedule-view');
+  try {
+    const doc = await API.doctor(doctorRecord.id);
+    const sch = doc.schedule || [];
+    const physSlots  = sch.filter(s => s.visit_type === 'physical');
+    const videoSlots = sch.filter(s => s.visit_type === 'video');
+
+    const slotRow = (s) => `
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg);padding:.4rem .75rem;border-radius:var(--radius-sm);margin-bottom:.35rem">
+        <span style="font-size:.83rem"><strong>${s.day_of_week}</strong> — ${s.time_slot}</span>
+        <button class="btn btn-outline btn-sm" style="color:var(--danger);padding:.2rem .5rem;font-size:.72rem;line-height:1" onclick="removeSlot(${s.id})">✕ Remove</button>
+      </div>`;
+
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div class="card card-lg">
+          <div style="font-weight:600;margin-bottom:1rem">🏥 Physical Visit Slots</div>
+          <div id="phys-slot-list" style="margin-bottom:1rem;max-height:260px;overflow-y:auto">
+            ${physSlots.map(slotRow).join('') || '<div style="font-size:.83rem;color:var(--text3);padding:.5rem 0">No physical slots added</div>'}
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:.75rem">
+            <div style="font-size:.82rem;font-weight:600;margin-bottom:.5rem">➕ Add Physical Slot</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.5rem">
+              <select class="form-input" id="add-phys-day" style="font-size:.82rem;padding:.45rem .6rem">
+                <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option>
+              </select>
+              <input class="form-input" id="add-phys-time" placeholder="e.g. 09:00 AM" style="font-size:.82rem;padding:.45rem .6rem"/>
+            </div>
+            <button class="btn btn-outline btn-sm btn-full" onclick="addSlot('physical')">+ Add Slot</button>
+          </div>
+        </div>
+        <div class="card card-lg">
+          <div style="font-weight:600;margin-bottom:1rem">📹 Video Consultation Slots</div>
+          <div id="video-slot-list" style="margin-bottom:1rem;max-height:260px;overflow-y:auto">
+            ${videoSlots.map(slotRow).join('') || '<div style="font-size:.83rem;color:var(--text3);padding:.5rem 0">No video slots added</div>'}
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:.75rem">
+            <div style="font-size:.82rem;font-weight:600;margin-bottom:.5rem">➕ Add Video Slot</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.5rem">
+              <select class="form-input" id="add-video-day" style="font-size:.82rem;padding:.45rem .6rem">
+                <option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option>
+              </select>
+              <input class="form-input" id="add-video-time" placeholder="e.g. 06:00 PM" style="font-size:.82rem;padding:.45rem .6rem"/>
+            </div>
+            <button class="btn btn-outline btn-sm btn-full" onclick="addSlot('video')">+ Add Slot</button>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch { el.innerHTML = '<div class="empty-state">Failed to load schedule</div>'; }
+}
+
+async function addSlot(type) {
+  const dayEl  = document.getElementById(type === 'physical' ? 'add-phys-day'  : 'add-video-day');
+  const timeEl = document.getElementById(type === 'physical' ? 'add-phys-time' : 'add-video-time');
+  const day    = dayEl?.value;
+  const time   = timeEl?.value?.trim();
+  if (!time) { showToast('Enter a time (e.g. 09:00 AM)', 'error'); return; }
+  try {
+    await API.addScheduleSlot(doctorRecord.id, { day_of_week: day, time_slot: time, visit_type: type });
+    showToast('Slot added', 'success');
+    if (timeEl) timeEl.value = '';
+    loadSchedule();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function removeSlot(slotId) {
+  if (!confirm('Remove this availability slot?')) return;
+  try {
+    await API.removeScheduleSlot(doctorRecord.id, slotId);
+    showToast('Slot removed', 'success');
+    loadSchedule();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Profile ──────────────────────────────────────────────────────────────────
+async function loadProfile() {
+  if (!doctorRecord) return;
+  const el = document.getElementById('profile-view');
+  try {
+    const data = await API.doctor(doctorRecord.id);
+    el.innerHTML = `
+      <div style="text-align:center;margin-bottom:1rem">
+        <div class="doc-avatar doc-avatar-lg" style="margin:0 auto .75rem">${data.avatar||'👨‍⚕️'}</div>
+        <div style="font-size:1.2rem;font-weight:700">${data.name}</div>
+        <div style="color:var(--primary);font-weight:500">${data.specialty}</div>
+        <div style="font-size:.78rem;color:var(--text3);margin-top:.25rem">${data.nmc_number}</div>
+      </div>
+      <hr class="divider"/>
+      <div class="info-label">Hospital</div><div class="info-val">🏥 ${data.hospital}</div>
+      <div class="info-label">Experience</div><div class="info-val">${data.experience_years} years</div>
+      <div class="info-label">Consultation Fee</div><div class="info-val">Rs. ${data.fee}</div>
+      <div class="info-label">Rating</div><div class="info-val">★ ${data.rating} (${data.total_reviews} reviews)</div>
+      <div class="info-label">Verified</div><div class="info-val">${data.verified ? '✅ Verified' : '⏳ Pending verification'}</div>
+    `;
+    document.getElementById('update-bio').value      = data.bio || '';
+    document.getElementById('update-fee').value      = data.fee;
+    document.getElementById('update-hospital').value = data.hospital;
+  } catch { el.innerHTML = '<div class="empty-state">Failed to load profile</div>'; }
+}
+
+async function saveProfile() {
+  try {
+    await API.updateDoctor(doctorRecord.id, {
+      bio:      document.getElementById('update-bio').value,
+      fee:      document.getElementById('update-fee').value,
+      hospital: document.getElementById('update-hospital').value,
+    });
+    showToast('Profile updated', 'success');
+    loadProfile();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function changePassword() {
+  try {
+    await API.changePassword(document.getElementById('old-pass').value, document.getElementById('new-pass').value);
+    showToast('Password changed', 'success');
+    document.getElementById('old-pass').value = '';
+    document.getElementById('new-pass').value = '';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Online toggle ────────────────────────────────────────────────────────────
+async function toggleOnlineStatus(online) {
+  document.getElementById('online-label').textContent = online ? 'Online' : 'Offline';
+  try {
+    await API.toggleStatus(doctorRecord.id, online);
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Unread polling ───────────────────────────────────────────────────────────
+let unreadTimer;
+async function pollUnread() {
+  try {
+    const { count } = await API.unreadCount();
+    const el = document.getElementById('side-unread');
+    if (el) { el.textContent = count; el.style.display = count > 0 ? 'inline' : 'none'; }
+  } catch {}
+  clearTimeout(unreadTimer);
+  unreadTimer = setTimeout(pollUnread, 15000);
+}
+
+function doLogout() { Auth.logout(); if (Chat) Chat.disconnect(); window.location.href = '/'; }
+
+guardAndInit();
+</script>
+<script src="/js/compliance.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment Successful — MediConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<style>
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg)}
+.box{background:var(--surface);border-radius:20px;padding:3rem 2rem;text-align:center;max-width:480px;width:90%;box-shadow:var(--shadow-md);border:1px solid var(--border)}
+.icon{font-size:4rem;margin-bottom:1.25rem;display:block}
+h1{font-family:'Lora',serif;font-size:1.6rem;color:var(--success);margin-bottom:.5rem}
+p{color:var(--text2);font-size:.9rem;line-height:1.6;margin-bottom:1rem}
+.ref-box{background:#dcfce7;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:.75rem 1rem;margin:1.25rem 0;font-weight:700;font-size:1.1rem;color:#166534;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="box">
+  <span class="icon">✅</span>
+  <h1>Payment Successful!</h1>
+  <p>Your appointment has been confirmed. A confirmation has been sent to your phone and email.</p>
+  <div class="ref-box" id="ref-box">Loading...</div>
+  <div style="font-size:.82rem;color:var(--text3);margin-bottom:1.5rem">
+    eSewa Reference: <strong id="ref-id">—</strong>
+  </div>
+  <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+    <a href="/" class="btn btn-primary">🏠 Go Home</a>
+    <a href="/" id="appt-link" class="btn btn-outline">📋 My Appointments</a>
+  </div>
+</div>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById('ref-box').textContent = p.get('ref') || 'MC-CONFIRMED';
+  document.getElementById('ref-id').textContent  = p.get('refId') || '—';
+  document.getElementById('appt-link').onclick   = () => { localStorage.setItem('mc_goto','appointments'); };
+</script>
+</body>
+</html>

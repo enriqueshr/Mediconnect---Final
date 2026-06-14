@@ -1,0 +1,7 @@
+node_modules/
+.env
+mediconnect.db
+mediconnect.db-shm
+mediconnect.db-wal
+logs/
+*.log

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel — MediConnect</title>
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0d9488"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="alternate icon" href="/favicon.ico"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<style>
+body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
+.sidebar{
+  width:240px;
+  background:linear-gradient(180deg,#0f172a 0%,#162032 100%);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:50;
+  box-shadow:4px 0 24px rgba(0,0,0,.18);
+}
+.sidebar-logo{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-logo a{font-family:'Lora',serif;font-size:1.2rem;font-weight:600;color:#fff;text-decoration:none}
+.sidebar-logo a span{color:var(--primary)}
+.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto}
+.sidebar-link{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.65rem 1.5rem;font-size:.875rem;font-weight:500;
+  color:rgba(255,255,255,.6);cursor:pointer;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  text-decoration:none;border:none;background:none;
+  width:100%;font-family:inherit;
+  border-radius:0;
+}
+.sidebar-link:hover,.sidebar-link.active{
+  color:var(--primary);
+  background:rgba(6,182,212,.15);
+  border-right:3px solid var(--primary);
+}
+.sidebar-link .icon{font-size:1.1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.08)}
+.main{margin-left:240px;flex:1;min-height:100vh}
+.topbar{
+  background:#ffffff;
+  border-bottom:1px solid var(--border);
+  padding:.75rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:40;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.content{padding:2rem}
+.page{display:none}.page.active{display:block}
+.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.admin-stat{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.25rem;
+  border-left:4px solid var(--primary);
+  box-shadow:0 2px 12px rgba(0,0,0,.04);
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.admin-stat:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(6,182,212,.12);
+}
+.admin-stat-val{font-size:1.8rem;font-weight:700;color:var(--primary)}
+.admin-stat-label{font-size:.8rem;color:var(--text2);margin-top:.25rem}
+.admin-stat-trend{font-size:.75rem;color:var(--success);margin-top:.2rem}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <a href="/">Medi<span>Connect</span></a>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.15rem">Admin Dashboard</div>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-link active" onclick="showPanel('overview')"><span class="icon">📊</span> Overview</button>
+    <button class="sidebar-link" onclick="showPanel('doctors')"><span class="icon">👨‍⚕️</span> Doctors</button>
+    <button class="sidebar-link" onclick="showPanel('users')"><span class="icon">👥</span> Patients</button>
+    <button class="sidebar-link" onclick="showPanel('appointments')"><span class="icon">📅</span> Appointments</button>
+    <button class="sidebar-link" onclick="showPanel('payments')"><span class="icon">💳</span> Payments</button>
+    <button class="sidebar-link" onclick="showPanel('discounts')"><span class="icon">🏷️</span> Discount Codes</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.75rem" id="admin-name">Admin</div>
+    <div style="display:flex;gap:.5rem">
+      <a href="/" class="btn btn-outline btn-sm" style="flex:1;justify-content:center;color:#fff;border-color:rgba(255,255,255,.3)">🏠 Site</a>
+      <button class="btn btn-sm" onclick="doLogout()" style="background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)">🚪</button>
+    </div>
+    <div style="margin-top:.75rem;font-size:.72rem;color:rgba(255,255,255,.4)">
+      <a href="/privacy.html" style="color:rgba(255,255,255,.4);text-decoration:none">Privacy Policy</a>
+      ·
+      <a href="/terms.html" style="color:rgba(255,255,255,.4);text-decoration:none">Terms of Service</a>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div id="topbar-title" style="font-weight:600;font-size:1rem">Platform Overview</div>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <span style="font-size:.82rem;color:var(--text2)" id="topbar-date"></span>
+      <a href="/" style="display:inline-flex;align-items:center;gap:.4rem;background:#0d9488;color:#fff;border:none;padding:.45rem 1rem;border-radius:8px;font-size:.83rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .2s" onmouseover="this.style.background='#0f766e'" onmouseout="this.style.background='#0d9488'">← Main Site</a>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- ─── OVERVIEW ─── -->
+    <div class="page active" id="panel-overview">
+      <div class="admin-grid" id="admin-stats">
+        <div class="admin-stat"><div class="admin-stat-val" id="as-users">—</div><div class="admin-stat-label">Registered Patients</div></div>
+        <div class="admin-stat" style="border-color:var(--info)"><div class="admin-stat-val" style="color:var(--info)" id="as-doctors">—</div><div class="admin-stat-label">Listed Doctors</div><div class="admin-stat-trend" id="as-online"></div></div>
+        <div class="admin-stat" style="border-color:var(--accent)"><div class="admin-stat-val" style="color:var(--accent)" id="as-appts">—</div><div class="admin-stat-label">Total Appointments</div><div class="admin-stat-trend" id="as-today"></div></div>
+        <div class="admin-stat" style="border-color:var(--success)"><div class="admin-stat-val" style="color:var(--success)" id="as-revenue">—</div><div class="admin-stat-label">Total Revenue (Rs.)</div><div class="admin-stat-trend" id="as-pending-pay"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div class="card">
+          <div class="section-title">Recent Appointments</div>
+          <div class="table-wrap"><table><thead><tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Status</th></tr></thead><tbody id="ov-appts"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="section-title">Active Discount Codes</div>
+          <div class="table-wrap"><table><thead><tr><th>Code</th><th>%</th><th>Uses</th><th>Limit</th></tr></thead><tbody id="ov-codes"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DOCTORS ─── -->
+    <div class="page" id="panel-doctors">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+        <div><div class="page-title">Doctors</div><div class="page-subtitle">Manage doctor accounts and verification</div></div>
+        <button class="btn btn-primary" onclick="openModal('add-doc-modal')">+ Add Doctor</button>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Specialty</th><th>Hospital</th><th>NMC</th><th>Fee</th><th>Rating</th><th>Status</th><th>Verified</th><th>Actions</th></tr></thead>
+            <tbody id="doctors-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PATIENTS ─── -->
+    <div class="page" id="panel-users">
+      <div class="page-header">
+        <div class="page-title">Patients</div>
+        <div class="page-subtitle">Registered patient accounts</div>
+      </div>
+      <div class="card" style="margin-bottom:1rem">
+        <input class="form-input" id="user-search" placeholder="🔍 Search by name or email..." oninput="loadUsers()" style="max-width:320px"/>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── APPOINTMENTS ─── -->
+    <div class="page" id="panel-appointments">
+      <div class="page-header">
+        <div class="page-title">Appointments</div>
+        <div class="page-subtitle">All platform appointments</div>
+      </div>
+      <div class="card" style="margin-bottom:1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+        <input class="form-input" id="appt-search" placeholder="🔍 Search..." oninput="loadAdminAppts()" style="flex:1;min-width:180px"/>
+        <select class="form-input" id="appt-status" onchange="loadAdminAppts()" style="width:140px">
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Ref</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Type</th><th>Fee</th><th>Payment</th><th>Status</th></tr></thead>
+            <tbody id="admin-appts-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PAYMENTS ─── -->
+    <div class="page" id="panel-payments">
+      <div class="page-header"><div class="page-title">Payments</div><div class="page-subtitle">All payment transactions</div></div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Patient</th><th>Doctor</th><th>Appt Ref</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DISCOUNTS ─── -->
+    <div class="page" id="panel-discounts">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+        <div><div class="page-title">Discount Codes</div><div class="page-subtitle">Manage promotional discount codes</div></div>
+        <button class="btn btn-primary" onclick="openModal('add-code-modal')">+ Create Code</button>
+      </div>
+      <div class="card" style="overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Code</th><th>Discount</th><th>Used</th><th>Max Uses</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="codes-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── ADD DOCTOR MODAL ─── -->
+<div class="modal-overlay" id="add-doc-modal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">👨‍⚕️ Add Doctor</div><button class="modal-close" onclick="closeModal('add-doc-modal')">×</button></div>
+    <div id="add-doc-error" class="form-error"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+      <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="ad-name" placeholder="Dr. Name"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="ad-email" type="email"/></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="ad-phone"/></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="ad-pass" type="password" placeholder="Default: Doctor@123" value="Doctor@123"/></div>
+      <div class="form-group"><label class="form-label">Specialty</label>
+        <select class="form-input" id="ad-spec">
+          <option>Cardiologist</option><option>Dermatologist</option><option>Neurologist</option>
+          <option>Gynecologist</option><option>Pediatrician</option><option>Psychiatrist</option>
+          <option>Orthopedist</option><option>Ophthalmologist</option><option>General Physician</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">NMC Number</label><input class="form-input" id="ad-nmc" placeholder="NMC-XXXXX"/></div>
+      <div class="form-group"><label class="form-label">Hospital</label><input class="form-input" id="ad-hosp"/></div>
+      <div class="form-group"><label class="form-label">Fee (Rs.)</label><input class="form-input" id="ad-fee" type="number"/></div>
+      <div class="form-group"><label class="form-label">Experience (yrs)</label><input class="form-input" id="ad-exp" type="number" value="0"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="ad-bio" rows="3"></textarea></div>
+    <button class="btn btn-primary btn-full" onclick="addDoctor()">Create Doctor Account</button>
+  </div>
+</div>
+
+<!-- ─── ADD DISCOUNT CODE MODAL ─── -->
+<div class="modal-overlay" id="add-code-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header"><div class="modal-title">🏷️ Create Discount Code</div><button class="modal-close" onclick="closeModal('add-code-modal')">×</button></div>
+    <div id="add-code-error" class="form-error"></div>
+    <div class="form-group"><label class="form-label">Code (uppercase)</label><input class="form-input" id="nc-code" placeholder="e.g. SAVE25" style="text-transform:uppercase"/></div>
+    <div class="form-group"><label class="form-label">Discount Percent (%)</label><input class="form-input" id="nc-pct" type="number" min="1" max="100"/></div>
+    <div class="form-group"><label class="form-label">Max Uses</label><input class="form-input" id="nc-max" type="number" value="100"/></div>
+    <button class="btn btn-primary btn-full" onclick="createCode()">Create Code</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/api.js"></script>
+<script>
+// ─── Auth Guard ───────────────────────────────────────────────────────────────
+async function guardAdmin() {
+  const token = Auth.getToken();
+  const user  = Auth.getUser();
+  if (!token || !user || user.role !== 'admin') { window.location.href = '/'; return; }
+  document.getElementById('admin-name').textContent = user.name;
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  loadOverview();
+}
+
+// ─── XSS escape helper ───────────────────────────────────────────────────────
+function escHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─── Panel navigation ─────────────────────────────────────────────────────────
+function showPanel(p) {
+  document.querySelectorAll('.page').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(e => e.classList.remove('active'));
+  document.getElementById('panel-' + p)?.classList.add('active');
+  const map = { overview:0, doctors:1, users:2, appointments:3, payments:4, discounts:5 };
+  const links = document.querySelectorAll('.sidebar-link');
+  if (map[p] !== undefined) links[map[p]]?.classList.add('active');
+  const titles = { overview:'Platform Overview', doctors:'Doctors', users:'Patients', appointments:'Appointments', payments:'Payments', discounts:'Discount Codes' };
+  document.getElementById('topbar-title').textContent = titles[p] || p;
+
+  if (p === 'doctors')      loadDoctors();
+  if (p === 'users')        loadUsers();
+  if (p === 'appointments') loadAdminAppts();
+  if (p === 'payments')     loadPayments();
+  if (p === 'discounts')    loadDiscounts();
+}
+
+function openModal(id)  { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─── Overview ─────────────────────────────────────────────────────────────────
+async function loadOverview() {
+  try {
+    const stats = await API.adminStats();
+    document.getElementById('as-users').textContent     = stats.users;
+    document.getElementById('as-doctors').textContent   = stats.doctors;
+    document.getElementById('as-online').textContent    = stats.online + ' online now';
+    document.getElementById('as-appts').textContent     = stats.appointments;
+    document.getElementById('as-today').textContent     = stats.today + ' today';
+    document.getElementById('as-revenue').textContent   = 'Rs.' + stats.revenue.toLocaleString();
+    document.getElementById('as-pending-pay').textContent = stats.pending_pay + ' pending payments';
+
+    const appts = await API.adminAppts({ limit: 5 });
+    document.getElementById('ov-appts').innerHTML = appts.slice(0,8).map(a => `
+      <tr>
+        <td style="font-family:monospace;font-size:.72rem">${escHtml(a.ref.slice(-8))}</td>
+        <td>${escHtml(a.patient_name)}</td>
+        <td>${escHtml(a.doctor_name)}</td>
+        <td><span class="badge badge-${escHtml(a.status)}">${escHtml(a.status)}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text3)">No appointments</td></tr>';
+
+    const codes = await API.adminDiscounts();
+    document.getElementById('ov-codes').innerHTML = codes.filter(c=>c.active).slice(0,6).map(c => `
+      <tr>
+        <td><strong>${escHtml(c.code)}</strong></td>
+        <td>${escHtml(c.discount_percent)}%</td>
+        <td>${escHtml(c.used_count)}</td>
+        <td>${escHtml(c.max_uses)}</td>
+      </tr>
+    `).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text3)">No codes</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Doctors ──────────────────────────────────────────────────────────────────
+async function loadDoctors() {
+  try {
+    const docs = await API.adminDoctors();
+    const tbody = document.getElementById('doctors-tbody');
+    tbody.innerHTML = docs.map(d => `
+      <tr>
+        <td><div style="font-weight:500">${escHtml(d.name)}</div><div style="font-size:.72rem;color:var(--text3)">${escHtml(d.email)}</div></td>
+        <td>${escHtml(d.specialty)}</td>
+        <td style="font-size:.82rem">${escHtml(d.hospital)}</td>
+        <td style="font-size:.75rem;font-family:monospace">${escHtml(d.nmc_number)}</td>
+        <td>Rs.${escHtml(d.fee)}</td>
+        <td>★ ${escHtml(d.rating)}</td>
+        <td><span class="badge ${d.online_status ? 'badge-online' : 'badge-offline'}">${d.online_status ? 'Online' : 'Offline'}</span></td>
+        <td><span class="badge ${d.verified ? 'badge-confirmed' : 'badge-pending'}">${d.verified ? '✓ Verified' : '⏳ Pending'}</span></td>
+        <td>
+          <div style="display:flex;gap:.3rem">
+            ${!d.verified ? `<button class="btn btn-success btn-sm" onclick="verifyDoc(${d.id},true)">Verify</button>` : `<button class="btn btn-outline btn-sm" onclick="verifyDoc(${d.id},false)">Revoke</button>`}
+          </div>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text3)">No doctors</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function verifyDoc(id, verified) {
+  try {
+    await API.adminVerifyDoc(id, verified);
+    showToast(verified ? 'Doctor verified' : 'Verification revoked', 'success');
+    loadDoctors();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function addDoctor() {
+  const errEl = document.getElementById('add-doc-error');
+  errEl.classList.remove('show');
+  try {
+    await API.adminCreateDoc({
+      name:             document.getElementById('ad-name').value.trim(),
+      email:            document.getElementById('ad-email').value.trim(),
+      phone:            document.getElementById('ad-phone').value.trim(),
+      password:         document.getElementById('ad-pass').value,
+      specialty:        document.getElementById('ad-spec').value,
+      nmc_number:       document.getElementById('ad-nmc').value.trim(),
+      hospital:         document.getElementById('ad-hosp').value.trim(),
+      fee:              document.getElementById('ad-fee').value,
+      experience_years: document.getElementById('ad-exp').value,
+      bio:              document.getElementById('ad-bio').value.trim(),
+    });
+    closeModal('add-doc-modal');
+    showToast('Doctor created successfully', 'success');
+    loadDoctors();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+// ─── Users (Patients) ─────────────────────────────────────────────────────────
+async function loadUsers() {
+  const q = document.getElementById('user-search')?.value || '';
+  try {
+    const users = await API.adminUsers({ role: 'patient', q });
+    const tbody = document.getElementById('users-tbody');
+    tbody.innerHTML = users.map(u => `
+      <tr>
+        <td><div style="font-weight:500">${escHtml(u.name)}</div></td>
+        <td>${escHtml(u.email)}</td>
+        <td>${escHtml(u.phone||'—')}</td>
+        <td>${fmtDate(u.created_at)}</td>
+        <td><button class="btn btn-outline btn-sm" style="color:var(--danger)" data-uid="${u.id}" data-uname="${escHtml(u.name)}" onclick="deleteUser(this.dataset.uid,this.dataset.uname)">Delete</button></td>
+      </tr>
+    `).join('') || '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text3)">No patients</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function deleteUser(id, name) {
+  if (!confirm('Delete patient "' + name + '"? This cannot be undone.')) return;
+  try {
+    await API.adminDeleteUser(id);
+    showToast('User deleted', 'success');
+    loadUsers();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Appointments ─────────────────────────────────────────────────────────────
+async function loadAdminAppts() {
+  const q      = document.getElementById('appt-search')?.value || '';
+  const status = document.getElementById('appt-status')?.value || '';
+  try {
+    const appts = await API.adminAppts({ q, status });
+    const tbody = document.getElementById('admin-appts-tbody');
+    tbody.innerHTML = appts.map(a => `
+      <tr>
+        <td style="font-family:monospace;font-size:.75rem">${escHtml(a.ref)}</td>
+        <td>${escHtml(a.patient_name)}</td>
+        <td>${escHtml(a.doctor_name)}<div style="font-size:.72rem;color:var(--text3)">${escHtml(a.specialty)}</div></td>
+        <td>${escHtml(a.appointment_date)}<div style="font-size:.72rem;color:var(--text3)">${escHtml(a.time_slot)}</div></td>
+        <td>${a.type === 'video' ? '📹 Video' : '🏥 Physical'}</td>
+        <td>Rs.${escHtml(a.final_fee)}</td>
+        <td><span class="badge ${a.payment_status==='completed'?'badge-confirmed':'badge-pending'}">${escHtml(a.payment_status)}</span></td>
+        <td><span class="badge badge-${escHtml(a.status)}">${escHtml(a.status)}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text3)">No appointments</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Payments ─────────────────────────────────────────────────────────────────
+async function loadPayments() {
+  try {
+    const pays  = await API.adminPayments();
+    const tbody = document.getElementById('payments-tbody');
+    tbody.innerHTML = pays.map(p => `
+      <tr>
+        <td>${fmtDate(p.created_at)}</td>
+        <td>${escHtml(p.patient_name)}</td>
+        <td>${escHtml(p.doctor_name)}</td>
+        <td style="font-family:monospace;font-size:.75rem">${escHtml(p.appt_ref)}</td>
+        <td>Rs.${escHtml(p.amount)}</td>
+        <td><span class="badge badge-teal">${escHtml(p.method)}</span></td>
+        <td><span class="badge ${p.status==='completed'?'badge-confirmed':p.status==='failed'?'badge-cancelled':'badge-pending'}">${escHtml(p.status)}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text3)">No payments</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Discount Codes ───────────────────────────────────────────────────────────
+async function loadDiscounts() {
+  try {
+    const codes = await API.adminDiscounts();
+    const tbody = document.getElementById('codes-tbody');
+    tbody.innerHTML = codes.map(c => `
+      <tr>
+        <td><strong style="font-family:monospace">${escHtml(c.code)}</strong></td>
+        <td>${escHtml(c.discount_percent)}%</td>
+        <td>${escHtml(c.used_count)}</td>
+        <td>${escHtml(c.max_uses)}</td>
+        <td>
+          <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.82rem">
+            <input type="checkbox" ${c.active?'checked':''} onchange="toggleCode(${c.id},this.checked)"/>
+            ${c.active ? '<span style="color:var(--success)">Active</span>' : '<span style="color:var(--text3)">Disabled</span>'}
+          </label>
+        </td>
+        <td style="font-size:.78rem;color:var(--text3)">${fmtDate(c.created_at)}</td>
+        <td>
+          <button class="btn btn-outline btn-sm" style="color:var(--danger)" data-cid="${c.id}" data-code="${escHtml(c.code)}" onclick="deleteCode(this.dataset.cid,this.dataset.code)">Delete</button>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text3)">No codes</td></tr>';
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function toggleCode(id, active) {
+  try { await API.adminUpdateCode(id, { active }); showToast('Code ' + (active?'activated':'deactivated'), 'success'); }
+  catch (e) { showToast(e.message, 'error'); }
+}
+
+async function deleteCode(id, code) {
+  if (!confirm('Delete code "' + code + '"?')) return;
+  try { await API.adminDeleteCode(id); showToast('Code deleted', 'success'); loadDiscounts(); }
+  catch (e) { showToast(e.message, 'error'); }
+}
+
+async function createCode() {
+  const errEl = document.getElementById('add-code-error');
+  errEl.classList.remove('show');
+  try {
+    await API.adminCreateCode({
+      code:             document.getElementById('nc-code').value.trim().toUpperCase(),
+      discount_percent: document.getElementById('nc-pct').value,
+      max_uses:         document.getElementById('nc-max').value,
+    });
+    closeModal('add-code-modal');
+    showToast('Discount code created', 'success');
+    loadDiscounts();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+function doLogout() { Auth.logout(); window.location.href = '/'; }
+
+guardAdmin();
+</script>
+<script src="/js/compliance.js"></script>
+</body>
+</html>

@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MediConnect — Your Health, Digitally Connected</title>
+<meta name="description" content="MediConnect connects patients with verified doctors for online and in-person appointments. Book, consult, and manage your healthcare — securely and easily."/>
+<meta name="keywords" content="doctor appointment, online consultation, healthcare, MediConnect, Nepal doctors"/>
+<meta name="robots" content="index, follow"/>
+<meta name="theme-color" content="#0d9488"/>
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="MediConnect — Your Health, Digitally Connected"/>
+<meta property="og:description" content="Book appointments with verified doctors online or in-person. Secure, HIPAA-compliant healthcare platform."/>
+<meta property="og:url" content="https://mediconnect.health/"/>
+<meta property="og:image" content="https://mediconnect.health/og-image.png"/>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="MediConnect — Your Health, Digitally Connected"/>
+<meta name="twitter:description" content="Book appointments with verified doctors online or in-person."/>
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="alternate icon" href="/favicon.ico"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:wght@500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/style.css"/>
+<style>
+/* ─── HOME PAGE V2 — Clinical Luxury ─── */
+
+/* Hero V2 */
+.hero-v2{
+  background:linear-gradient(135deg,#0a1628 0%,#0d2847 40%,#0a3d52 100%);
+  padding:100px 0 80px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-v2::before{
+  content:'';
+  position:absolute;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(6,182,212,.12) 0%,transparent 65%);
+  top:-200px;right:-150px;
+  pointer-events:none;
+}
+.hero-v2::after{
+  content:'';
+  position:absolute;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 65%);
+  bottom:-100px;left:100px;
+  pointer-events:none;
+}
+.hero-v2-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 70% 50%,rgba(6,182,212,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-v2-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
+.hero-v2-title{
+  font-family:'Lora',serif;
+  font-size:clamp(2.2rem,4.5vw,3.2rem);
+  font-weight:700;
+  color:#fff;
+  line-height:1.18;
+  margin:.75rem 0 1.1rem;
+  letter-spacing:-.02em;
+}
+.hero-v2-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,#06b6d4,#38bdf8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-v2-sub{
+  color:rgba(255,255,255,.78);
+  font-size:1.05rem;
+  line-height:1.75;
+  max-width:480px;
+  margin-bottom:1.75rem;
+}
+.hero-v2-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.75rem;align-items:center}
+.hero-trust-row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.hero-trust-item{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.88);
+  border-radius:999px;
+  padding:5px 14px;
+  font-size:11.5px;
+  font-weight:600;
+  border:1px solid rgba(255,255,255,.18);
+  letter-spacing:.01em;
+}
+.hero-v2-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.hero-v2-stat-card{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  padding:1.4rem 1.25rem;
+  text-align:center;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  cursor:default;
+}
+.hero-v2-stat-card:hover{
+  transform:translateY(-4px);
+  background:rgba(255,255,255,.14);
+  box-shadow:0 16px 40px rgba(0,0,0,.2);
+  border-color:rgba(6,182,212,.4);
+}
+.hsc-icon{font-size:2rem;margin-bottom:.5rem}
+.hsc-val{font-size:1.7rem;font-weight:800;color:#fff;line-height:1;letter-spacing:-.02em}
+.hsc-label{font-size:.73rem;color:rgba(255,255,255,.65);margin-top:.3rem;letter-spacing:.03em;text-transform:uppercase}
+
+/* Live stats bar */
+.live-stats-bar{
+  background:#0f172a;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.live-stats-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;flex-wrap:wrap;gap:.5rem;
+}
+.live-stat{text-align:center;flex:1;min-width:120px}
+.live-stat-val{font-size:1.4rem;font-weight:800;color:#06b6d4}
+.live-stat-lbl{font-size:.72rem;color:#94a3b8;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.live-stat-divider{width:1px;height:40px;background:rgba(255,255,255,.10);flex-shrink:0}
+
+/* Section styles */
+.home-section{padding:4rem 0}
+.section-header{text-align:center;margin-bottom:2.5rem}
+.section-h2{
+  font-family:'Lora',serif;
+  font-size:clamp(1.6rem,3vw,2rem);
+  font-weight:700;
+  margin-bottom:.5rem;
+  background:linear-gradient(135deg,#0ea5e9,#8b5cf6);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.section-sub{color:#6b7280;font-size:.95rem;max-width:500px;margin:0 auto}
+
+/* Specialties grid */
+.specialties-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+.spec-card{
+  background:#fff;
+  border:1.5px solid #e2e8f0;
+  border-radius:16px;
+  padding:1.5rem 1rem;
+  text-align:center;
+  cursor:pointer;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.spec-card:hover{
+  border-color:#06b6d4;
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(6,182,212,.15);
+}
+.spec-icon{
+  width:3rem;height:3rem;
+  background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+  margin:0 auto .75rem;
+  box-shadow:0 4px 14px rgba(6,182,212,.25);
+}
+.spec-name{font-weight:700;color:#0f172a;font-size:.9rem;margin-bottom:.25rem}
+.spec-desc{font-size:.75rem;color:#9ca3af}
+
+/* How it works */
+.how-it-works{display:flex;align-items:flex-start;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hiw-step{
+  background:#fff;
+  border:1.5px solid #e2e8f0;
+  border-radius:20px;
+  padding:2rem 1.5rem;
+  text-align:center;
+  flex:1;min-width:200px;max-width:260px;
+  position:relative;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.hiw-step::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+}
+.hiw-step:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(6,182,212,.15);
+  border-color:#06b6d4;
+}
+.hiw-num{
+  position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+  color:#fff;font-weight:800;font-size:.85rem;
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(6,182,212,.4);
+}
+.hiw-icon{font-size:2.5rem;margin-bottom:.75rem}
+.hiw-title{font-weight:700;color:#0f172a;font-size:1rem;margin-bottom:.5rem}
+.hiw-desc{font-size:.83rem;color:#6b7280;line-height:1.6}
+.hiw-arrow{font-size:1.5rem;color:#cbd5e1;padding-top:3rem;flex-shrink:0}
+
+/* Why choose us */
+.why-section{
+  background:linear-gradient(135deg,#0f172a 0%,#0a3d52 100%);
+  border-radius:24px;
+  padding:3.5rem 2.5rem;
+  margin:0 0 3.5rem;
+}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem}
+.why-card{
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:1.5rem;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.why-card:hover{
+  background:rgba(255,255,255,.14);
+  transform:translateY(-3px);
+  border-color:rgba(6,182,212,.35);
+  box-shadow:0 12px 32px rgba(6,182,212,.12);
+}
+.why-icon{font-size:2rem;margin-bottom:.75rem}
+.why-card h3{color:#fff;font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.why-card p{color:rgba(255,255,255,.75);font-size:.83rem;line-height:1.65}
+
+/* Testimonials */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.testimonial-card{
+  background:#fff;
+  border:1.5px solid #e2e8f0;
+  border-radius:20px;
+  padding:1.75rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.testimonial-card:hover{
+  box-shadow:0 8px 28px rgba(6,182,212,.1);
+  border-color:#06b6d4;
+  transform:translateY(-2px);
+}
+.tc-stars{font-size:1rem;margin-bottom:.75rem}
+.tc-text{color:#374151;font-size:.9rem;line-height:1.7;font-style:italic;margin-bottom:1.25rem}
+.tc-author{display:flex;align-items:center;gap:.75rem}
+.tc-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#0ea5e9,#06b6d4);
+  color:#fff;font-weight:700;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.tc-name{font-weight:700;color:#0f172a;font-size:.88rem}
+.tc-role{font-size:.75rem;color:#9ca3af}
+
+/* Emergency banner */
+.emergency-banner{
+  background:#fef2f2;border:1.5px solid #fecaca;border-radius:16px;
+  padding:1.5rem 2rem;display:flex;align-items:center;
+  justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:2rem;
+}
+.eb-left{display:flex;align-items:center;gap:1rem}
+.eb-icon{font-size:2rem}
+.eb-title{font-weight:700;color:#dc2626;font-size:1rem}
+.eb-sub{font-size:.8rem;color:#6b7280;margin-top:2px}
+.eb-numbers{display:flex;gap:1rem;flex-wrap:wrap}
+.eb-num{background:#fff;border:1px solid #fecaca;border-radius:8px;padding:.4rem .9rem;font-size:.83rem;color:#374151}
+
+/* BMI banner */
+.bmi-banner{
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  border-radius:20px;padding:2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:2rem;cursor:pointer;transition:transform .2s;margin-bottom:2rem;
+  box-shadow:0 4px 20px rgba(245,158,11,.25);
+}
+.bmi-banner:hover{transform:translateY(-2px)}
+.bmi-banner-text h3{color:#fff;font-size:1.3rem;font-weight:700;margin-bottom:.5rem}
+.bmi-banner-text p{color:rgba(255,255,255,.9);font-size:.88rem;line-height:1.6}
+.bmi-banner-icons{display:flex;gap:1rem;font-size:2.5rem;flex-shrink:0}
+
+/* Trust row */
+.trust-row{
+  display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;
+  padding:2rem 0;border-top:1px solid #e2e8f0;margin-bottom:0;
+}
+.trust-badge{
+  display:flex;align-items:center;gap:.75rem;
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;
+  padding:.75rem 1.25rem;flex:1;min-width:160px;max-width:220px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);transition:all .2s;
+}
+.trust-badge:hover{border-color:#06b6d4;box-shadow:0 4px 14px rgba(6,182,212,.1)}
+.tb-icon{font-size:1.5rem}
+.tb-title{font-weight:700;color:#0f172a;font-size:.83rem}
+.tb-sub{font-size:.72rem;color:#6b7280}
+
+/* Site footer */
+.site-footer{background:#0f172a;padding:3rem 0 0;margin-top:3rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;padding-bottom:2.5rem}
+.footer-brand{}
+.footer-col-title{color:rgba(255,255,255,.45);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem}
+.footer-link{
+  display:block;background:none;border:none;
+  color:rgba(255,255,255,.6);font-size:.83rem;cursor:pointer;
+  text-align:left;padding:3px 0;text-decoration:none;
+  transition:color .15s;font-family:inherit;width:100%;
+}
+.footer-link:hover{color:#06b6d4}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:1.25rem 0;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:.5rem;
+}
+.footer-bottom div{color:rgba(255,255,255,.35);font-size:.75rem}
+
+/* Responsive */
+@media(max-width:900px){
+  .hero-v2-inner{grid-template-columns:1fr;text-align:center}
+  .hero-v2-sub,.hero-trust-row,.hero-v2-btns{justify-content:center}
+  .hero-v2-cards{grid-template-columns:repeat(4,1fr);gap:.6rem}
+  .hsc-val{font-size:1.1rem}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .live-stats-inner{justify-content:center}
+  .live-stat-divider{display:none}
+  .specialties-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+@media(max-width:600px){
+  .hero-v2{padding:70px 0 50px}
+  .hero-v2-cards{grid-template-columns:1fr 1fr}
+  .hiw-arrow{display:none}
+  .why-section{padding:2rem 1.25rem}
+  .footer-grid{grid-template-columns:1fr}
+  .bmi-banner-icons{display:none}
+  .emergency-banner{flex-direction:column}
+  .specialties-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+<style>
+/* ─── Account Settings Page ─── */
+.account-page{max-width:680px;margin:0 auto;padding:2rem 1rem 4rem}
+.account-header{margin-bottom:2rem}
+.account-header h2{font-size:1.6rem;font-weight:700;color:#111827;margin-bottom:.25rem}
+.account-header p{color:#6b7280;font-size:.88rem}
+.account-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:1.75rem;margin-bottom:1.25rem}
+.account-section-title{font-weight:700;color:#111827;font-size:1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+.account-field{margin-bottom:1rem}
+.account-field label{display:block;font-size:.82rem;font-weight:600;color:#374151;margin-bottom:.35rem}
+.account-field input{width:100%;padding:.6rem .85rem;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.9rem;font-family:inherit;transition:border-color .2s;box-sizing:border-box}
+.account-field input:focus{outline:none;border-color:#0d9488}
+.account-field input:disabled{background:#f9fafb;color:#9ca3af}
+.account-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.danger-section{background:#fff5f5;border:1.5px solid #fecaca;border-radius:16px;padding:1.75rem;margin-bottom:1.25rem}
+.danger-section-title{font-weight:700;color:#dc2626;font-size:1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.danger-desc{font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:1.25rem}
+.danger-actions{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn-danger{background:#dc2626;color:#fff;border:none;padding:.6rem 1.25rem;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-danger:hover{background:#b91c1c;transform:translateY(-1px)}
+.btn-danger-outline{background:#fff;color:#dc2626;border:1.5px solid #fecaca;padding:.6rem 1.25rem;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-danger-outline:hover{background:#fef2f2;border-color:#dc2626}
+.gdpr-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem;padding-top:1rem;border-top:1px solid #e5e7eb}
+.audit-list{max-height:240px;overflow-y:auto;font-size:.78rem}
+.audit-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid #f3f4f6;color:#374151}
+.audit-action{font-weight:500}
+.audit-meta{color:#9ca3af;font-size:.72rem;text-align:right}
+.pw-strength{height:4px;border-radius:99px;margin-top:.35rem;transition:all .3s}
+.appt-remove-btn{background:none;border:1px solid #fecaca;color:#dc2626;border-radius:6px;padding:3px 10px;font-size:.75rem;cursor:pointer;font-family:inherit;transition:all .15s}
+.appt-remove-btn:hover{background:#fef2f2}
+</style>
+</head>
+<body>
+
+<!-- ─── TOP NAV ─── -->
+<nav class="topnav">
+  <a href="/" class="logo">Medi<span>Connect</span></a>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('doctors')">Find Doctors</button>
+    <button class="nav-link auth-required" onclick="requireAuth(()=>showPage('appointments'))">My Appointments</button>
+    <button class="nav-link auth-required" onclick="requireAuth(()=>showPage('chat'))">Messages <span id="nav-unread" style="display:none;background:var(--danger);color:#fff;border-radius:50%;padding:0 5px;font-size:.7rem;margin-left:3px"></span></button>
+    <button class="nav-link" onclick="showPage('bmi')">BMI & Nutrition</button>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <button class="btn btn-outline btn-sm" onclick="openModal('login-modal')">Log in</button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('signup-modal')">Sign up</button>
+  </div>
+</nav>
+
+<!-- ─── HOME PAGE ─── -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero-v2">
+    <div class="hero-v2-bg"></div>
+    <div class="max-w hero-v2-inner">
+      <div class="hero-v2-text">
+        <div style="margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">
+          <span class="badge badge-online">● Live Platform</span>
+          <span style="background:rgba(255,255,255,.15);color:#fff;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:500">HIPAA · GDPR Compliant</span>
+        </div>
+        <h1 class="hero-v2-title">Your Health,<br><em>Digitally Connected</em></h1>
+        <p class="hero-v2-sub">Book appointments with top verified doctors, get encrypted secure messaging, and manage your healthcare — all in one place. Serving Nepal, Asia, USA &amp; Europe.</p>
+        <div class="hero-v2-btns">
+          <button class="btn btn-hero-primary" onclick="showPage('doctors')">
+            <span>🔍</span> Find a Doctor
+          </button>
+          <button class="btn btn-hero-ghost" onclick="showPage('bmi')">
+            <span>📊</span> BMI Calculator
+          </button>
+        </div>
+        <div class="hero-trust-row">
+          <div class="hero-trust-item">🔒 HIPAA Compliant</div>
+          <div class="hero-trust-item">🇪🇺 GDPR Compliant</div>
+          <div class="hero-trust-item">🛡️ AES-256 Encrypted</div>
+          <div class="hero-trust-item">✅ Verified Doctors</div>
+        </div>
+      </div>
+      <div class="hero-v2-cards">
+        <div class="hero-v2-stat-card">
+          <div class="hsc-icon">👨‍⚕️</div>
+          <div class="hsc-val">8+</div>
+          <div class="hsc-label">Specialist Doctors</div>
+        </div>
+        <div class="hero-v2-stat-card">
+          <div class="hsc-icon">🏥</div>
+          <div class="hsc-val">6</div>
+          <div class="hsc-label">Partner Hospitals</div>
+        </div>
+        <div class="hero-v2-stat-card">
+          <div class="hsc-icon">🌐</div>
+          <div class="hsc-val">24/7</div>
+          <div class="hsc-label">Online Consultations</div>
+        </div>
+        <div class="hero-v2-stat-card">
+          <div class="hsc-icon">💬</div>
+          <div class="hsc-val">24/7</div>
+          <div class="hsc-label">Encrypted Messaging</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE STATS BAR -->
+  <section class="live-stats-bar">
+    <div class="max-w live-stats-inner">
+      <div class="live-stat">
+        <div class="live-stat-val" id="stat-appts">—</div>
+        <div class="live-stat-lbl">Appointments Booked</div>
+      </div>
+      <div class="live-stat-divider"></div>
+      <div class="live-stat">
+        <div class="live-stat-val">4.8 ⭐</div>
+        <div class="live-stat-lbl">Average Doctor Rating</div>
+      </div>
+      <div class="live-stat-divider"></div>
+      <div class="live-stat">
+        <div class="live-stat-val">Rs.500</div>
+        <div class="live-stat-lbl">Consultations Starting From</div>
+      </div>
+      <div class="live-stat-divider"></div>
+      <div class="live-stat">
+        <div class="live-stat-val" id="stat-online">—</div>
+        <div class="live-stat-lbl">Doctors Online Now</div>
+      </div>
+      <div class="live-stat-divider"></div>
+      <div class="live-stat">
+        <div class="live-stat-val">&lt;2 min</div>
+        <div class="live-stat-lbl">Average Response Time</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w">
+
+    <!-- SPECIALTIES GRID -->
+    <section class="home-section">
+      <div class="section-header">
+        <h2 class="section-h2">Browse by Specialty</h2>
+        <p class="section-sub">Find the right specialist for your health needs</p>
+      </div>
+      <div class="specialties-grid">
+        <div class="spec-card" onclick="setSpecAndGo('Cardiologist')">
+          <div class="spec-icon">❤️</div>
+          <div class="spec-name">Cardiology</div>
+          <div class="spec-desc">Heart & vascular health</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Dermatologist')">
+          <div class="spec-icon">🌿</div>
+          <div class="spec-name">Dermatology</div>
+          <div class="spec-desc">Skin, hair & nail care</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Neurologist')">
+          <div class="spec-icon">🧠</div>
+          <div class="spec-name">Neurology</div>
+          <div class="spec-desc">Brain & nervous system</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Gynecologist')">
+          <div class="spec-icon">👩‍⚕️</div>
+          <div class="spec-name">Gynecology</div>
+          <div class="spec-desc">Women's health</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Pediatrician')">
+          <div class="spec-icon">👶</div>
+          <div class="spec-name">Pediatrics</div>
+          <div class="spec-desc">Child health & development</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Psychiatrist')">
+          <div class="spec-icon">🧘</div>
+          <div class="spec-name">Psychiatry</div>
+          <div class="spec-desc">Mental health & wellness</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Orthopedist')">
+          <div class="spec-icon">🦴</div>
+          <div class="spec-name">Orthopedics</div>
+          <div class="spec-desc">Bones, joints & muscles</div>
+        </div>
+        <div class="spec-card" onclick="setSpecAndGo('Ophthalmologist')">
+          <div class="spec-icon">👁️</div>
+          <div class="spec-name">Ophthalmology</div>
+          <div class="spec-desc">Eye care & vision</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="home-section">
+      <div class="section-header">
+        <h2 class="section-h2">How It Works</h2>
+        <p class="section-sub">Get care in 3 simple steps</p>
+      </div>
+      <div class="how-it-works">
+        <div class="hiw-step">
+          <div class="hiw-num">1</div>
+          <div class="hiw-icon">🔍</div>
+          <h3 class="hiw-title">Find a Doctor</h3>
+          <p class="hiw-desc">Search by specialty, hospital, or doctor name. Read verified reviews and check real-time availability.</p>
+        </div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step">
+          <div class="hiw-num">2</div>
+          <div class="hiw-icon">📅</div>
+          <h3 class="hiw-title">Book Instantly</h3>
+          <p class="hiw-desc">Choose your preferred time slot — physical visit or video consultation. Apply discount codes at checkout.</p>
+        </div>
+        <div class="hiw-arrow">→</div>
+        <div class="hiw-step">
+          <div class="hiw-num">3</div>
+          <div class="hiw-icon">💬</div>
+          <h3 class="hiw-title">Get Care</h3>
+          <p class="hiw-desc">Meet your doctor in person or via secure video. Message anytime with end-to-end encrypted chat.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED DOCTORS -->
+    <section class="home-section">
+      <div class="section-header">
+        <h2 class="section-h2">Featured Doctors</h2>
+        <p class="section-sub">Verified specialists ready to help you today</p>
+        <button class="btn btn-outline btn-sm" onclick="showPage('doctors')" style="margin-top:.75rem">View All Doctors →</button>
+      </div>
+      <div class="doctors-grid" id="home-doctors"><div class="spinner"></div></div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="home-section why-section">
+      <div class="section-header">
+        <h2 class="section-h2" style="color:#fff">Why Choose MediConnect?</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,.8)">Built for the modern patient. Trusted by healthcare providers across Asia, USA &amp; Europe.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">🔒</div>
+          <h3>Bank-Level Security</h3>
+          <p>AES-256 encryption for all health records. HIPAA, GDPR &amp; CCPA compliant. Your data never leaves without your consent.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">✅</div>
+          <h3>Verified Doctors Only</h3>
+          <p>Every doctor is verified with NMC/medical council registration. Our admin team manually approves each provider.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">💬</div>
+          <h3>Real-Time Messaging</h3>
+          <p>Encrypted direct messaging between patients and doctors. Get follow-up answers without another appointment.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">📱</div>
+          <h3>Video Consultations</h3>
+          <p>See any specialist from home via secure video call. Perfect for follow-ups, mental health, and second opinions.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">📋</div>
+          <h3>Clinical Notes</h3>
+          <p>Doctors provide detailed clinical notes after each visit. Access your health history and treatment records anytime.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">💳</div>
+          <h3>Flexible Payments</h3>
+          <p>Pay via eSewa, Khalti, or cash. Discount codes available. Transparent pricing — no hidden fees ever.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="home-section">
+      <div class="section-header">
+        <h2 class="section-h2">What Patients Say</h2>
+        <p class="section-sub">Real experiences from real patients</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="tc-stars">⭐⭐⭐⭐⭐</div>
+          <p class="tc-text">"Booked a cardiology appointment in under 2 minutes. Dr. Rajesh was incredibly thorough. The video consultation felt just like an in-person visit!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">PR</div>
+            <div><div class="tc-name">Priya R.</div><div class="tc-role">Patient · Kathmandu</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="tc-stars">⭐⭐⭐⭐⭐</div>
+          <p class="tc-text">"As someone living abroad, being able to consult Nepali doctors online is a game-changer. Encrypted messaging with my doctor gives me total peace of mind."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">SM</div>
+            <div><div class="tc-name">Sanjay M.</div><div class="tc-role">Patient · Melbourne, AU</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="tc-stars">⭐⭐⭐⭐⭐</div>
+          <p class="tc-text">"The AI symptom checker pointed me to the right specialist. Saved me so much time. The BMI tracker and nutrition advice is a brilliant bonus!"</p>
+          <div class="tc-author">
+            <div class="tc-avatar">AT</div>
+            <div><div class="tc-name">Anita T.</div><div class="tc-role">Patient · Pokhara</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMERGENCY BANNER -->
+    <section class="emergency-banner">
+      <div class="eb-left">
+        <div class="eb-icon">🚨</div>
+        <div>
+          <div class="eb-title">Medical Emergency?</div>
+          <div class="eb-sub">Do not use this platform for emergencies. Call your local emergency number immediately.</div>
+        </div>
+      </div>
+      <div class="eb-numbers">
+        <div class="eb-num"><strong>Nepal:</strong> 102</div>
+        <div class="eb-num"><strong>USA:</strong> 911</div>
+        <div class="eb-num"><strong>EU:</strong> 112</div>
+        <div class="eb-num"><strong>UK:</strong> 999</div>
+      </div>
+    </section>
+
+    <!-- BMI & NUTRITION BANNER -->
+    <section class="bmi-banner" onclick="showPage('bmi')">
+      <div class="bmi-banner-text">
+        <h3>🥗 BMI & Personalized Nutrition</h3>
+        <p>Calculate your BMI and get AI-curated recipes tailored to your health goals. Use ingredients from your own kitchen.</p>
+        <button class="btn" style="background:#fff;color:#d97706;font-weight:600;padding:.6rem 1.4rem;margin-top:.75rem">Try the BMI Calculator →</button>
+      </div>
+      <div class="bmi-banner-icons">
+        <div>🥑</div><div>🥦</div><div>🍎</div><div>💪</div>
+      </div>
+    </section>
+
+    <!-- COMPLIANCE TRUST ROW -->
+    <section class="trust-row">
+      <div class="trust-badge"><div class="tb-icon">🏥</div><div><div class="tb-title">HIPAA Compliant</div><div class="tb-sub">US Health Data Standards</div></div></div>
+      <div class="trust-badge"><div class="tb-icon">🇪🇺</div><div><div class="tb-title">GDPR Compliant</div><div class="tb-sub">EU Data Protection</div></div></div>
+      <div class="trust-badge"><div class="tb-icon">🔐</div><div><div class="tb-title">AES-256 Encrypted</div><div class="tb-sub">All Health Records</div></div></div>
+      <div class="trust-badge"><div class="tb-icon">🛡️</div><div><div class="tb-title">CCPA Compliant</div><div class="tb-sub">California Privacy Rights</div></div></div>
+      <div class="trust-badge"><div class="tb-icon">✅</div><div><div class="tb-title">Verified Doctors</div><div class="tb-sub">NMC Registration Checked</div></div></div>
+    </section>
+
+  </div><!-- /max-w -->
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="max-w footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="font-size:1.3rem;margin-bottom:.5rem">Medi<span style="color:#5eead4">Connect</span></div>
+        <p style="color:rgba(255,255,255,.6);font-size:13px;line-height:1.7;max-width:220px">Nepal's trusted digital health platform. Connecting patients with verified doctors across Asia, USA &amp; Europe.</p>
+        <div style="display:flex;gap:8px;margin-top:1rem">
+          <a href="/privacy.html" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;hover:color:#fff">Privacy Policy</a>
+          <span style="color:rgba(255,255,255,.3)">·</span>
+          <a href="/terms.html" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:none">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">For Patients</div>
+        <button onclick="showPage('doctors')" class="footer-link">Find a Doctor</button>
+        <button onclick="showPage('appointments')" class="footer-link">My Appointments</button>
+        <button onclick="showPage('chat')" class="footer-link">Messages</button>
+        <button onclick="showPage('bmi')" class="footer-link">BMI Calculator</button>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Specialties</div>
+        <button onclick="setSpecAndGo('Cardiologist')" class="footer-link">Cardiology</button>
+        <button onclick="setSpecAndGo('Dermatologist')" class="footer-link">Dermatology</button>
+        <button onclick="setSpecAndGo('Neurologist')" class="footer-link">Neurology</button>
+        <button onclick="setSpecAndGo('Gynecologist')" class="footer-link">Gynecology</button>
+        <button onclick="setSpecAndGo('Pediatrician')" class="footer-link">Pediatrics</button>
+        <button onclick="setSpecAndGo('Psychiatrist')" class="footer-link">Psychiatry</button>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Compliance</div>
+        <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="/terms.html" class="footer-link">Terms of Service</a>
+        <a href="mailto:dpo@mediconnect.com" class="footer-link">DPO Contact</a>
+        <a href="mailto:security@mediconnect.com" class="footer-link">Security Issues</a>
+        <button onclick="MediCompliance.exportData()" class="footer-link">Download My Data</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 MediConnect Health Platform · All rights reserved</div>
+      <div>🔒 HIPAA · GDPR · CCPA · AES-256 Encrypted</div>
+    </div>
+  </footer>
+
+</div><!-- /page-home -->
+
+<!-- ─── ACCOUNT SETTINGS PAGE ─── -->
+<div class="page" id="page-account">
+  <div class="account-page">
+    <div class="account-header">
+      <h2>⚙️ Account Settings</h2>
+      <p>Manage your profile, security settings, and data privacy</p>
+    </div>
+
+    <!-- Edit Profile -->
+    <div class="account-section">
+      <div class="account-section-title">👤 Personal Information</div>
+      <div class="account-field">
+        <label>Full Name</label>
+        <input type="text" id="acc-name" placeholder="Your full name"/>
+      </div>
+      <div class="account-field">
+        <label>Email Address</label>
+        <input type="email" id="acc-email" disabled placeholder="Email (cannot be changed)"/>
+      </div>
+      <div class="account-field">
+        <label>Phone Number</label>
+        <input type="tel" id="acc-phone" placeholder="+977-XXXXXXXXXX"/>
+      </div>
+      <div class="account-actions">
+        <button class="btn btn-primary btn-sm" onclick="saveProfile()">💾 Save Changes</button>
+        <button class="btn btn-outline btn-sm" onclick="loadAccountPage()">↩ Discard</button>
+      </div>
+    </div>
+
+    <!-- Change Password -->
+    <div class="account-section">
+      <div class="account-section-title">🔐 Change Password</div>
+      <div class="account-field">
+        <label>Current Password</label>
+        <input type="password" id="acc-old-pw" placeholder="Current password"/>
+      </div>
+      <div class="account-field">
+        <label>New Password</label>
+        <input type="password" id="acc-new-pw" placeholder="Min 8 chars, uppercase, number, special" oninput="checkPwStrength(this.value)"/>
+        <div class="pw-strength" id="pw-strength-bar"></div>
+        <div id="pw-strength-text" style="font-size:.72rem;color:#9ca3af;margin-top:.25rem"></div>
+      </div>
+      <div class="account-field">
+        <label>Confirm New Password</label>
+        <input type="password" id="acc-confirm-pw" placeholder="Repeat new password"/>
+      </div>
+      <div id="pw-change-err" style="color:#dc2626;font-size:.82rem;margin-bottom:.5rem;display:none"></div>
+      <div class="account-actions">
+        <button class="btn btn-primary btn-sm" onclick="changePassword()">🔑 Update Password</button>
+      </div>
+    </div>
+
+    <!-- Data & Privacy (GDPR) -->
+    <div class="account-section">
+      <div class="account-section-title">🛡️ My Data & Privacy</div>
+      <p style="font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:1rem">
+        Under GDPR, CCPA, and HIPAA you have full rights over your health data.
+        <a href="/privacy.html" target="_blank" style="color:#0d9488">Privacy Policy</a> ·
+        <a href="/terms.html" target="_blank" style="color:#0d9488">Terms of Service</a>
+      </p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn btn-outline btn-sm" onclick="downloadMyData()">📥 Download My Data (JSON)</button>
+        <button class="btn btn-outline btn-sm" onclick="viewAuditTrail()">📋 View Access Log</button>
+      </div>
+      <div id="audit-trail-container" style="display:none;margin-top:1.25rem">
+        <div style="font-size:.82rem;font-weight:600;color:#374151;margin-bottom:.5rem">Recent Activity Log</div>
+        <div class="audit-list" id="audit-trail-list"></div>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="danger-section">
+      <div class="danger-section-title">⚠️ Danger Zone</div>
+      <p class="danger-desc">
+        Permanently remove your personal information from MediConnect. Medical records will be de-identified and retained as required by HIPAA (minimum 6 years). This action <strong>cannot be undone</strong>.
+      </p>
+      <div class="danger-actions">
+        <button class="btn-danger" onclick="deleteAccount()">🗑️ Delete My Account</button>
+        <button class="btn-danger-outline" onclick="revokeAllSessions()">🔒 Log Out All Devices</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FIND DOCTORS PAGE ─── -->
+<div class="page" id="page-doctors">
+  <div class="max-w">
+    <div class="page-header"><div class="page-title">Find a Doctor</div><div class="page-subtitle">Browse and book appointments with verified Nepali specialists</div></div>
+    <div class="search-bar">
+      <input class="search-input" style="flex:2" placeholder="🔍 Search by name, specialty, hospital..." id="doc-search" oninput="filterDoctors()"/>
+      <select class="search-input" id="spec-filter" onchange="filterDoctors()">
+        <option value="">All Specialties</option>
+        <option>Cardiologist</option><option>Dermatologist</option><option>Neurologist</option>
+        <option>Gynecologist</option><option>Pediatrician</option><option>Psychiatrist</option>
+        <option>Orthopedist</option><option>Ophthalmologist</option>
+      </select>
+      <select class="search-input" id="avail-filter" onchange="filterDoctors()">
+        <option value="">All Availability</option>
+        <option value="true">Online Now</option>
+        <option value="false">Offline</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem" id="spec-chips">
+      <div class="chip active" onclick="setSpecChip(this,'')">All</div>
+      <div class="chip" onclick="setSpecChip(this,'Cardiologist')">❤️ Cardiology</div>
+      <div class="chip" onclick="setSpecChip(this,'Dermatologist')">🌿 Dermatology</div>
+      <div class="chip" onclick="setSpecChip(this,'Neurologist')">🧠 Neurology</div>
+      <div class="chip" onclick="setSpecChip(this,'Gynecologist')">👩‍⚕️ Gynecology</div>
+      <div class="chip" onclick="setSpecChip(this,'Pediatrician')">👶 Pediatrics</div>
+      <div class="chip" onclick="setSpecChip(this,'Psychiatrist')">🧘 Psychiatry</div>
+      <div class="chip" onclick="setSpecChip(this,'Orthopedist')">🦴 Orthopedics</div>
+      <div class="chip" onclick="setSpecChip(this,'Ophthalmologist')">👁️ Ophthalmology</div>
+    </div>
+    <div class="doctors-grid" id="doctors-grid"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ─── DOCTOR PROFILE PAGE ─── -->
+<div class="page" id="page-profile">
+  <div class="max-w">
+    <div class="breadcrumb" onclick="showPage('doctors')">← <span>Find Doctors</span> / Doctor Profile</div>
+    <div class="profile-layout">
+      <div>
+        <div class="profile-card" id="profile-card">
+          <div class="doc-avatar doc-avatar-lg" id="prof-avatar">👨‍⚕️</div>
+          <div style="margin-top:.75rem">
+            <div class="profile-name" id="prof-name">Doctor</div>
+            <div style="color:var(--primary);font-weight:500;margin-bottom:.25rem" id="prof-spec">Specialist</div>
+            <div style="font-size:.78rem;color:var(--text3);margin-bottom:.75rem" id="prof-nmc">NMC Reg:</div>
+            <span class="badge" id="prof-status">● Offline</span>
+          </div>
+          <div class="profile-stats" id="prof-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0">
+            <div style="background:var(--bg);border-radius:var(--radius-sm);padding:.75rem;text-align:center"><div style="font-size:1.1rem;font-weight:700;color:var(--primary)" id="prof-rating">—</div><div style="font-size:.72rem;color:var(--text3)">Rating</div></div>
+            <div style="background:var(--bg);border-radius:var(--radius-sm);padding:.75rem;text-align:center"><div style="font-size:1.1rem;font-weight:700;color:var(--primary)" id="prof-reviews">—</div><div style="font-size:.72rem;color:var(--text3)">Reviews</div></div>
+            <div style="background:var(--bg);border-radius:var(--radius-sm);padding:.75rem;text-align:center"><div style="font-size:1.1rem;font-weight:700;color:var(--primary)" id="prof-exp">—</div><div style="font-size:.72rem;color:var(--text3)">Experience</div></div>
+            <div style="background:var(--bg);border-radius:var(--radius-sm);padding:.75rem;text-align:center"><div style="font-size:1.1rem;font-weight:700;color:var(--primary)" id="prof-fee">—</div><div style="font-size:.72rem;color:var(--text3)">Fee</div></div>
+          </div>
+          <hr class="divider"/>
+          <div class="info-label">About</div>
+          <div class="profile-bio" id="prof-bio" style="font-size:.85rem;color:var(--text2);line-height:1.6;margin-bottom:1rem"></div>
+          <div class="info-label">Hospital</div>
+          <div style="font-size:.88rem;margin-bottom:1rem" id="prof-hosp"></div>
+          <hr class="divider"/>
+          <button class="btn btn-primary btn-full" onclick="openBookingPanel('physical')">📅 Book Physical</button>
+          <button class="btn btn-outline btn-full" style="margin-top:.5rem" onclick="openBookingPanel('video')">📹 Book Video Call</button>
+          <button class="btn btn-outline btn-full" style="margin-top:.5rem" onclick="startChatWithDoctor()">💬 Message Doctor</button>
+        </div>
+      </div>
+      <div>
+        <div class="tab-bar">
+          <div class="tab active" onclick="switchTab(this,'tab-schedule')">Schedule & Booking</div>
+          <div class="tab" onclick="switchTab(this,'tab-reviews')">Reviews</div>
+        </div>
+        <div id="tab-schedule">
+          <div class="video-promo"><div style="font-size:2rem;flex-shrink:0">📹</div><div><h3>Video Consultation Available</h3><p style="font-size:.78rem;opacity:.9;line-height:1.5">Consult from home. Secure HD video call — anytime, any day.</p></div></div>
+          <div id="schedule-container"><div class="spinner"></div></div>
+          <div id="booking-cta" style="display:none">
+            <div class="card" style="margin-top:1rem">
+              <div style="font-weight:600;margin-bottom:1rem">📅 Confirm Your Appointment</div>
+              <div id="selected-slot-info" style="background:var(--primary-light);border-radius:var(--radius-sm);padding:.75rem;margin-bottom:1rem;font-size:.83rem;color:var(--primary-dark);font-weight:500"></div>
+              <div class="booking-type-toggle">
+                <div class="btype active" id="btype-physical" onclick="setBookingType('physical')">🏥 Physical Visit</div>
+                <div class="btype" id="btype-video" onclick="setBookingType('video')">📹 Video Call</div>
+              </div>
+              <div class="form-group"><label class="form-label">Appointment Date</label><input class="form-input" type="date" id="book-date" required/></div>
+              <div class="form-group"><label class="form-label">Patient Name</label><input class="form-input" id="book-name" placeholder="Your full name"/></div>
+              <div class="form-group"><label class="form-label">Phone Number</label><input class="form-input" id="book-phone" placeholder="+977-XXXXXXXXXX"/></div>
+              <div class="form-group"><label class="form-label">Reason for Visit</label><input class="form-input" id="book-reason" placeholder="Brief description of symptoms"/></div>
+              <div class="form-group">
+                <label class="form-label">Discount Code (optional)</label>
+                <div style="display:flex;gap:.5rem">
+                  <input class="form-input" id="discount-input" placeholder="e.g. WELCOME20" style="flex:1" oninput="handleDiscountInput()"/>
+                  <button class="btn btn-outline btn-sm" onclick="applyDiscount()">Apply</button>
+                </div>
+                <div id="discount-msg" style="font-size:.75rem;margin-top:.25rem"></div>
+              </div>
+              <div class="fee-breakdown">
+                <div class="fee-row"><span>Consultation Fee</span><span id="orig-fee">Rs. —</span></div>
+                <div class="fee-row" id="disc-row" style="display:none;color:var(--success)"><span id="disc-label">Discount</span><span id="disc-val">-Rs. 0</span></div>
+                <div class="fee-row total"><span>Total</span><span id="final-fee">Rs. —</span></div>
+              </div>
+              <div style="font-size:.78rem;font-weight:500;color:var(--text2);margin-bottom:.5rem">Payment Method</div>
+              <div class="payment-methods">
+                <div class="pay-option selected" onclick="selPay(this,'esewa')">⚡ eSewa</div>
+                <div class="pay-option" onclick="selPay(this,'khalti')">💳 Khalti</div>
+                <div class="pay-option" onclick="selPay(this,'ime')">🏪 IME Pay</div>
+                <div class="pay-option" onclick="selPay(this,'cash')">💵 Cash</div>
+              </div>
+              <button class="btn btn-primary btn-full" style="padding:.7rem" onclick="confirmBooking()">✅ Confirm & Book</button>
+            </div>
+          </div>
+        </div>
+        <div id="tab-reviews" style="display:none">
+          <div class="card" id="reviews-container"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MY APPOINTMENTS ─── -->
+<div class="page" id="page-appointments">
+  <div class="max-w">
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+      <div><div class="page-title">My Appointments</div><div class="page-subtitle">Track and manage your bookings</div></div>
+      <button class="btn btn-primary" onclick="showPage('doctors')">+ Book New</button>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+      <button class="chip active" onclick="filterAppts(this,'')">All</button>
+      <button class="chip" onclick="filterAppts(this,'confirmed')">Confirmed</button>
+      <button class="chip" onclick="filterAppts(this,'pending')">Pending</button>
+      <button class="chip" onclick="filterAppts(this,'completed')">Completed</button>
+      <button class="chip" onclick="filterAppts(this,'cancelled')">Cancelled</button>
+    </div>
+    <div id="appt-list" style="display:flex;flex-direction:column;gap:1rem"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<!-- ─── MESSAGES / CHAT ─── -->
+<div class="page" id="page-chat">
+  <div class="max-w">
+    <div class="page-title" style="margin-bottom:1rem">Messages</div>
+    <div class="chat-layout" id="chat-layout">
+      <div class="chat-sidebar">
+        <div class="chat-sidebar-header">Conversations</div>
+        <div class="chat-list" id="chat-list"><div class="spinner" style="margin:1rem auto"></div></div>
+      </div>
+      <div class="chat-main" id="chat-main">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text3)">
+          <div style="font-size:3rem;margin-bottom:1rem">💬</div>
+          <div>Select a conversation to start messaging</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── BMI & NUTRITION ─── -->
+<div class="page" id="page-bmi">
+  <div class="max-w">
+    <div class="page-header"><div class="page-title">🥗 BMI Calculator & Nutrition</div><div class="page-subtitle">Calculate BMI, set your goal, add ingredients — get personalized recipes</div></div>
+    <div class="bmi-layout">
+      <div>
+        <div class="card card-lg" style="margin-bottom:1.25rem">
+          <div style="font-weight:600;margin-bottom:1rem">⚖️ Calculate Your BMI</div>
+          <div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input" type="number" id="height-cm" placeholder="e.g. 170" oninput="calcBMI()"/></div>
+          <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" type="number" id="weight-kg" placeholder="e.g. 65" oninput="calcBMI()"/></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+            <div class="form-group"><label class="form-label">Age</label><input class="form-input" type="number" id="age-inp" placeholder="e.g. 25"/></div>
+            <div class="form-group"><label class="form-label">Gender</label><select class="form-input" id="gender-inp"><option>Male</option><option>Female</option><option>Other</option></select></div>
+          </div>
+          <div id="bmi-result-box" style="display:none;background:var(--primary-light);border-radius:var(--radius);padding:1rem;text-align:center;margin:1rem 0">
+            <div id="bmi-value" style="font-size:2.5rem;font-weight:700;color:var(--primary);line-height:1">--</div>
+            <div id="bmi-cat" style="font-size:.85rem;color:var(--primary-dark);font-weight:500;margin-top:.25rem">--</div>
+          </div>
+          <div class="bmi-scale"><div class="bmi-scale-item bmi-s1">Underweight<br>&lt;18.5</div><div class="bmi-scale-item bmi-s2">Normal<br>18.5–24.9</div><div class="bmi-scale-item bmi-s3">Overweight<br>25–29.9</div><div class="bmi-scale-item bmi-s4">Obese<br>&gt;30</div></div>
+        </div>
+        <div class="card card-lg" style="margin-bottom:1.25rem">
+          <div style="font-weight:600;margin-bottom:.75rem">🎯 Fitness Goal</div>
+          <div class="goal-btns">
+            <div class="goal-btn" onclick="setGoal(this,'bulk')">💪 Bulking<br><span style="font-size:.72rem;color:var(--text3)">Gain muscle mass</span></div>
+            <div class="goal-btn" onclick="setGoal(this,'lean-bulk')">🔥 Lean Bulk<br><span style="font-size:.72rem;color:var(--text3)">Muscle, less fat</span></div>
+            <div class="goal-btn" onclick="setGoal(this,'cut')">✂️ Cutting<br><span style="font-size:.72rem;color:var(--text3)">Lose body fat</span></div>
+            <div class="goal-btn" onclick="setGoal(this,'maintain')">⚖️ Maintain<br><span style="font-size:.72rem;color:var(--text3)">Stay balanced</span></div>
+          </div>
+        </div>
+        <div class="card card-lg">
+          <div style="font-weight:600;margin-bottom:.5rem">🍳 Ingredients You Have</div>
+          <div style="font-size:.78rem;color:var(--text2);margin-bottom:.75rem">Add items and get recipes from your kitchen</div>
+          <div id="ing-tags" style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem"></div>
+          <div style="display:flex;gap:.5rem">
+            <input class="form-input" id="ing-input" placeholder="e.g. rice, chicken, eggs..." style="flex:1" onkeydown="if(event.key==='Enter')addIngredient()"/>
+            <button class="btn btn-primary btn-sm" onclick="addIngredient()">Add</button>
+          </div>
+          <div style="margin-top:.75rem;display:flex;gap:.4rem;flex-wrap:wrap">
+            <span style="font-size:.75rem;color:var(--text3);align-self:center">Quick:</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Rice')">Rice</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Chicken')">Chicken</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Eggs')">Eggs</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Lentils')">Lentils</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Spinach')">Spinach</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Oats')">Oats</span>
+            <span class="chip" style="font-size:.72rem" onclick="quickAdd('Potatoes')">Potatoes</span>
+          </div>
+          <button class="btn btn-primary btn-full" style="margin-top:1rem;padding:.65rem" onclick="generateRecipes()">📄 Generate Recipes</button>
+        </div>
+      </div>
+      <div id="recipe-right">
+        <div class="card" style="padding:3rem;text-align:center">
+          <div style="font-size:3.5rem;margin-bottom:1rem">🍽️</div>
+          <div style="font-weight:600;color:var(--text2);margin-bottom:.5rem">Your recipes will appear here</div>
+          <div style="font-size:.85rem;color:var(--text3)">Enter BMI details, select a goal, add ingredients, then click Generate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── LOGIN MODAL ─── -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title">Welcome back 👋</div>
+      <button class="modal-close" onclick="closeModal('login-modal')">×</button>
+    </div>
+    <div id="login-error" class="form-error"></div>
+    <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="login-email" type="email" placeholder="your@email.com"/></div>
+    <div class="form-group">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <label class="form-label">Password</label>
+        <a onclick="closeModal('login-modal');openModal('forgot-modal')" style="font-size:.78rem;color:var(--primary);cursor:pointer">Forgot password?</a>
+      </div>
+      <input class="form-input" id="login-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">Log In</button>
+    <div style="text-align:center;margin-top:1rem;font-size:.83rem;color:var(--text2)">
+      Don't have an account? <a onclick="closeModal('login-modal');openModal('signup-modal')" style="color:var(--primary);cursor:pointer;font-weight:500">Sign up</a>
+    </div>
+    <div style="text-align:center;margin-top:.5rem;font-size:.83rem;color:var(--text2)">
+      Are you a doctor? <a onclick="closeModal('login-modal');openModal('doc-signup-modal')" style="color:var(--primary);cursor:pointer;font-weight:500">Doctor registration →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FORGOT PASSWORD MODAL ─── -->
+<div class="modal-overlay" id="forgot-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title">Reset Password</div>
+      <button class="modal-close" onclick="closeModal('forgot-modal')">×</button>
+    </div>
+    <p style="font-size:.87rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.5">Enter your account email. If an account exists, a reset link will be sent.</p>
+    <div id="forgot-msg" class="form-error" style="display:none"></div>
+    <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="forgot-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')doForgotPassword()"/></div>
+    <button class="btn btn-primary btn-full" onclick="doForgotPassword()">Send Reset Link</button>
+    <div style="text-align:center;margin-top:1rem;font-size:.83rem">
+      <a onclick="closeModal('forgot-modal');openModal('login-modal')" style="color:var(--primary);cursor:pointer">← Back to Login</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PATIENT SIGNUP MODAL ─── -->
+<div class="modal-overlay" id="signup-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title">Create account 🏥</div>
+      <button class="modal-close" onclick="closeModal('signup-modal')">×</button>
+    </div>
+    <div id="signup-error" class="form-error"></div>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="su-name" placeholder="Ram Thapa"/></div>
+    <div class="form-group"><label class="form-label">Email Address</label><input class="form-input" id="su-email" type="email" placeholder="your@email.com"/></div>
+    <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="su-phone" type="tel" placeholder="+977-9XXXXXXXXX"/></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="su-pass" type="password" placeholder="Min 8 chars, include A-Z, 0-9, symbol" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+    <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#6b7280;margin-top:8px;">
+  <input type="checkbox" id="reg-consent-terms" required style="margin-top:2px;flex-shrink:0;">
+  <span>I agree to the <a href="/terms.html" target="_blank" style="color:#0d9488">Terms of Service</a> and <a href="/privacy.html" target="_blank" style="color:#0d9488">Privacy Policy</a></span>
+</label>
+    <button class="btn btn-primary btn-full btn-lg" onclick="doSignup()">Create Account</button>
+    <div style="text-align:center;margin-top:1rem;font-size:.83rem;color:var(--text2)">
+      Already have an account? <a onclick="closeModal('signup-modal');openModal('login-modal')" style="color:var(--primary);cursor:pointer;font-weight:500">Log in</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DOCTOR REGISTRATION MODAL ─── -->
+<div class="modal-overlay" id="doc-signup-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Doctor Registration 👨‍⚕️</div>
+      <button class="modal-close" onclick="closeModal('doc-signup-modal')">×</button>
+    </div>
+    <div id="doc-signup-error" class="form-error"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+      <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="ds-name" placeholder="Dr. Name"/></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="ds-email" type="email" placeholder="doctor@email.com"/></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="ds-phone" placeholder="+977-9XXXXXXXXX"/></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="ds-pass" type="password" placeholder="Min 8 chars, include A-Z, 0-9, symbol"/></div>
+      <div class="form-group"><label class="form-label">Specialty</label>
+        <select class="form-input" id="ds-spec">
+          <option>Cardiologist</option><option>Dermatologist</option><option>Neurologist</option>
+          <option>Gynecologist</option><option>Pediatrician</option><option>Psychiatrist</option>
+          <option>Orthopedist</option><option>Ophthalmologist</option><option>General Physician</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">NMC Number</label><input class="form-input" id="ds-nmc" placeholder="NMC-XXXXX"/></div>
+      <div class="form-group"><label class="form-label">Hospital/Clinic</label><input class="form-input" id="ds-hosp" placeholder="Hospital name"/></div>
+      <div class="form-group"><label class="form-label">Consultation Fee (Rs.)</label><input class="form-input" id="ds-fee" type="number" placeholder="e.g. 800"/></div>
+      <div class="form-group"><label class="form-label">Experience (years)</label><input class="form-input" id="ds-exp" type="number" placeholder="e.g. 10"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Bio / About</label><textarea class="form-input" id="ds-bio" placeholder="Brief professional bio..."></textarea></div>
+    <button class="btn btn-primary btn-full" onclick="doDoctorSignup()">Submit Registration</button>
+    <div style="font-size:.75rem;color:var(--text3);margin-top:.75rem;text-align:center">Registration pending admin verification. You'll receive login credentials via email.</div>
+  </div>
+</div>
+
+<!-- ─── BOOKING CONFIRM MODAL ─── -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🎉 Appointment Confirmed!</div>
+      <button class="modal-close" onclick="closeModal('booking-modal')">×</button>
+    </div>
+    <div class="success-banner">
+      <p style="font-size:.78rem;margin-bottom:.35rem">Appointment ID</p>
+      <div class="appt-id" id="confirm-id">MC-XXXXXX</div>
+      <h3 style="margin-top:.5rem;color:#166534">Booking Successful!</h3>
+      <p style="color:#166534;font-size:.82rem">Confirmation sent to your phone & email.</p>
+    </div>
+    <div style="margin-top:1.25rem;display:flex;flex-direction:column;gap:.4rem;font-size:.83rem">
+      <div style="display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">Doctor</span><span id="confirm-doc" style="font-weight:500"></span></div>
+      <div style="display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">Date & Time</span><span id="confirm-slot" style="font-weight:500"></span></div>
+      <div style="display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border)"><span style="color:var(--text2)">Type</span><span id="confirm-type" style="font-weight:500"></span></div>
+      <div style="display:flex;justify-content:space-between;padding:.4rem 0"><span style="color:var(--text2)">Total</span><span id="confirm-fee" style="font-weight:700;color:var(--primary)"></span></div>
+    </div>
+    <div id="esewa-form-container" style="display:none;margin-top:1rem"></div>
+    <button class="btn btn-primary btn-full" style="margin-top:1rem" onclick="closeModal('booking-modal');showPage('appointments')">View My Appointments</button>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer style="text-align:center;padding:1.5rem 1rem;font-size:.78rem;color:var(--text3);border-top:1px solid var(--border);margin-top:2rem">
+  <a href="/privacy.html" style="color:var(--text3);text-decoration:none;margin:0 .5rem">Privacy Policy</a>
+  ·
+  <a href="/terms.html" style="color:var(--text3);text-decoration:none;margin:0 .5rem">Terms of Service</a>
+</footer>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/chat.js"></script>
+<script src="/js/webrtc.js"></script>
+<script>
+// ─── State ────────────────────────────────────────────────────────────────────
+let allDoctors = [];
+let currentDoctor = null;
+let currentBooking = { slot: null, clinic: '', type: 'physical', date: '' };
+let payMethod = 'esewa';
+let discountData = null;
+let currentGoal = 'bulk';
+let ingredients = [];
+let chatOtherId = null;
+let activePhysDay = 'Mon';
+let activeVideoDay = 'Mon';
+
+function nextDateForDay(dayAbbr) {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const target = days.indexOf(dayAbbr);
+  if (target < 0) return new Date().toISOString().split('T')[0];
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  const diff = (target - d.getDay() + 7) % 7;
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+const RECIPES = {
+  bulk: [
+    { name:'Chicken Dal Bhat Power Bowl', desc:'High-protein Nepali staple — dal, bhat, chicken curry, spinach saag.', time:'35 min', serves:2, cal:720, protein:52, carbs:85, fat:14, ings:['Rice','Lentils','Chicken','Spinach','Ghee'] },
+    { name:'Masala Oat Protein Breakfast', desc:'Savory oats with eggs and veggies. Slow-release carbs + protein.', time:'15 min', serves:1, cal:480, protein:28, carbs:55, fat:12, ings:['Oats','Eggs','Spinach','Potatoes'] },
+    { name:'Egg Fried Rice', desc:'Quick high-calorie meal with rice, eggs, and veggies.', time:'20 min', serves:2, cal:540, protein:24, carbs:72, fat:16, ings:['Rice','Eggs','Spinach'] },
+  ],
+  'lean-bulk': [
+    { name:'Grilled Chicken Spinach Salad', desc:'Lean protein with leafy greens. Optimal macro ratio for lean gains.', time:'25 min', serves:2, cal:420, protein:45, carbs:28, fat:9, ings:['Chicken','Spinach','Potatoes'] },
+    { name:'Lentil Soup with Brown Rice', desc:'Plant-based protein powerhouse. High fiber, moderate carbs.', time:'30 min', serves:2, cal:380, protein:22, carbs:58, fat:4, ings:['Lentils','Rice','Spinach'] },
+    { name:'Egg White Omelette', desc:'Low-fat, high-protein breakfast with spinach for micronutrients.', time:'10 min', serves:1, cal:210, protein:30, carbs:5, fat:6, ings:['Eggs','Spinach'] },
+  ],
+  cut: [
+    { name:'Steamed Chicken with Saag', desc:'Low-calorie, high-protein Nepali meal. Minimal oil, maximum nutrients.', time:'30 min', serves:2, cal:280, protein:38, carbs:12, fat:6, ings:['Chicken','Spinach'] },
+    { name:'Lentil Clear Soup', desc:'Light but filling. High fiber to keep you satiated.', time:'20 min', serves:2, cal:220, protein:14, carbs:32, fat:2, ings:['Lentils','Spinach'] },
+    { name:'Scrambled Eggs with Greens', desc:'Low-carb, high-protein breakfast ideal for fat loss.', time:'10 min', serves:1, cal:190, protein:22, carbs:4, fat:9, ings:['Eggs','Spinach'] },
+  ],
+  maintain: [
+    { name:'Balanced Dal Bhat', desc:"Nepal's national dish — perfectly balanced macros.", time:'30 min', serves:2, cal:520, protein:22, carbs:78, fat:8, ings:['Rice','Lentils','Spinach','Ghee'] },
+    { name:'Chicken Noodle Soup', desc:'Warming balanced meal with carbs, protein and vegetables.', time:'25 min', serves:2, cal:390, protein:28, carbs:45, fat:8, ings:['Chicken','Potatoes','Spinach'] },
+  ]
+};
+
+// ─── Page navigation ──────────────────────────────────────────────────────────
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(e => e.classList.remove('active'));
+  const pg = document.getElementById('page-' + p);
+  if (!pg) return;
+  pg.classList.add('active');
+  const idx = { home:0, doctors:1, appointments:2, chat:3, bmi:4 };
+  const links = document.querySelectorAll('.nav-link');
+  if (idx[p] !== undefined) links[idx[p]]?.classList.add('active');
+  window.scrollTo(0, 0);
+
+  if (p === 'appointments') loadAppointments();
+  if (p === 'chat')         loadConversations(true);
+  if (p === 'doctors')      loadDoctors();
+}
+
+function requireAuth(fn) {
+  if (!Auth.isLoggedIn()) { openModal('login-modal'); return; }
+  fn();
+}
+
+// ─── Modal helpers ────────────────────────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id)?.classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.classList.remove('show');
+  try {
+    const data = await API.login(email, pw);
+    Auth.save(data.token, data.user, data.refresh_token);
+
+    // Redirect based on role
+    if (data.user.role === 'admin')  { window.location.href = '/admin.html'; return; }
+    if (data.user.role === 'doctor') { window.location.href = '/doctor.html'; return; }
+
+    closeModal('login-modal');
+    initChat(data.token, data.user);
+    WebRTCCall.init(Chat.socket, data.user);
+    updateNavForUser(data.user);
+    showToast('Welcome back, ' + data.user.name + '!', 'success');
+    pollUnread();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+async function doForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const msgEl = document.getElementById('forgot-msg');
+  msgEl.style.display = 'none';
+  if (!email) { msgEl.textContent = 'Please enter your email address.'; msgEl.style.display = 'block'; msgEl.style.color = 'var(--danger)'; return; }
+  try {
+    await API.post('/auth/forgot-password', { email }, false);
+  } catch {}
+  // Always show success to prevent email enumeration
+  msgEl.textContent = 'If an account with that email exists, a reset link has been sent.';
+  msgEl.style.display = 'block';
+  msgEl.style.color = 'var(--success)';
+  document.getElementById('forgot-email').value = '';
+}
+
+async function doSignup() {
+  const name  = document.getElementById('su-name').value.trim();
+  const email = document.getElementById('su-email').value.trim();
+  const phone = document.getElementById('su-phone').value.trim();
+  const pass  = document.getElementById('su-pass').value;
+  const errEl = document.getElementById('signup-error');
+  errEl.classList.remove('show');
+  try {
+    const data = await API.register({ name, email, phone, password: pass, consent_terms: document.getElementById('reg-consent-terms').checked, consent_privacy: document.getElementById('reg-consent-terms').checked });
+    Auth.save(data.token, data.user, data.refresh_token);
+    closeModal('signup-modal');
+    initChat(data.token, data.user);
+    WebRTCCall.init(Chat.socket, data.user);
+    updateNavForUser(data.user);
+    showToast('Account created! Welcome to MediConnect 🎉', 'success');
+    pollUnread();
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+async function doDoctorSignup() {
+  const errEl = document.getElementById('doc-signup-error');
+  errEl.classList.remove('show');
+  try {
+    await API.registerDoctor({
+      name:             document.getElementById('ds-name').value.trim(),
+      email:            document.getElementById('ds-email').value.trim(),
+      phone:            document.getElementById('ds-phone').value.trim(),
+      password:         document.getElementById('ds-pass').value,
+      specialty:        document.getElementById('ds-spec').value,
+      nmc_number:       document.getElementById('ds-nmc').value.trim(),
+      hospital:         document.getElementById('ds-hosp').value.trim(),
+      fee:              document.getElementById('ds-fee').value,
+      experience_years: document.getElementById('ds-exp').value,
+      bio:              document.getElementById('ds-bio').value.trim(),
+    });
+    closeModal('doc-signup-modal');
+    showToast('Registration submitted! Awaiting admin verification.', 'success');
+  } catch (e) {
+    errEl.textContent = e.message;
+    errEl.classList.add('show');
+  }
+}
+
+function doLogout() {
+  Auth.logout();
+  if (Chat) Chat.disconnect();
+  location.reload();
+}
+
+// ─── Account Settings ──────────────────────────────────────────────────────────
+async function loadAccountPage() {
+  try {
+    const { user } = await API.me();
+    document.getElementById('acc-name').value  = user.name  || '';
+    document.getElementById('acc-email').value = user.email || '';
+    document.getElementById('acc-phone').value = user.phone || '';
+    // Update stored user
+    Auth.save(Auth.getToken(), user);
+  } catch(e) { showToast('Failed to load profile', 'error'); }
+}
+
+async function saveProfile() {
+  const name  = document.getElementById('acc-name').value.trim();
+  const phone = document.getElementById('acc-phone').value.trim();
+  if (!name) return showToast('Name is required', 'error');
+  try {
+    await API.updateProfile({ name, phone });
+    const u = Auth.getUser();
+    Auth.save(Auth.getToken(), { ...u, name, phone });
+    updateNavForUser({ ...u, name });
+    showToast('Profile updated successfully!', 'success');
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function checkPwStrength(pw) {
+  const bar  = document.getElementById('pw-strength-bar');
+  const text = document.getElementById('pw-strength-text');
+  if (!pw) { bar.style.width='0'; bar.style.background=''; text.textContent=''; return; }
+  let score = 0;
+  if (pw.length >= 8)         score++;
+  if (/[A-Z]/.test(pw))       score++;
+  if (/[0-9]/.test(pw))       score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  if (pw.length >= 12)        score++;
+  const levels = [
+    { color:'#dc2626', label:'Very weak',  w:'20%' },
+    { color:'#f59e0b', label:'Weak',       w:'40%' },
+    { color:'#f59e0b', label:'Fair',       w:'60%' },
+    { color:'#10b981', label:'Strong',     w:'80%' },
+    { color:'#059669', label:'Very strong',w:'100%'},
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  bar.style.width    = lvl.w;
+  bar.style.background = lvl.color;
+  text.style.color   = lvl.color;
+  text.textContent   = lvl.label;
+}
+
+async function changePassword() {
+  const oldPw  = document.getElementById('acc-old-pw').value;
+  const newPw  = document.getElementById('acc-new-pw').value;
+  const confPw = document.getElementById('acc-confirm-pw').value;
+  const errEl  = document.getElementById('pw-change-err');
+  errEl.style.display = 'none';
+
+  if (!oldPw || !newPw || !confPw) { errEl.textContent='All fields required'; errEl.style.display='block'; return; }
+  if (newPw !== confPw)             { errEl.textContent='Passwords do not match'; errEl.style.display='block'; return; }
+
+  try {
+    await API.changePassword(oldPw, newPw);
+    showToast('Password changed! Please log in again on all devices.', 'success');
+    document.getElementById('acc-old-pw').value = '';
+    document.getElementById('acc-new-pw').value = '';
+    document.getElementById('acc-confirm-pw').value = '';
+    document.getElementById('pw-strength-bar').style.width = '0';
+    document.getElementById('pw-strength-text').textContent = '';
+  } catch(e) { errEl.textContent = e.message; errEl.style.display='block'; }
+}
+
+async function downloadMyData() {
+  try {
+    const token = Auth.getToken();
+    const res   = await fetch('/api/gdpr/export', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!res.ok) throw new Error('Export failed');
+    const blob  = await res.blob();
+    const url   = URL.createObjectURL(blob);
+    const a     = document.createElement('a');
+    a.href      = url;
+    a.download  = 'mediconnect-data-' + Date.now() + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Data export downloaded!', 'success');
+  } catch(e) { showToast('Export failed. Try again.', 'error'); }
+}
+
+async function viewAuditTrail() {
+  const container = document.getElementById('audit-trail-container');
+  const list      = document.getElementById('audit-trail-list');
+  if (container.style.display !== 'none') { container.style.display = 'none'; return; }
+  try {
+    const logs = await API.gdprAuditTrail();
+    if (!logs.length) { list.innerHTML = '<div style="color:#9ca3af;padding:.5rem 0">No activity recorded yet.</div>'; }
+    else {
+      list.innerHTML = logs.slice(0, 30).map(l => `
+        <div class="audit-row">
+          <div class="audit-action">${l.action.replace(/_/g,' ')}</div>
+          <div class="audit-meta">${l.ip_address} · ${new Date(l.created_at).toLocaleString()}</div>
+        </div>
+      `).join('');
+    }
+    container.style.display = 'block';
+  } catch(e) { showToast('Could not load audit trail', 'error'); }
+}
+
+async function deleteAccount() {
+  if (!confirm('This will permanently anonymise all your personal data.\n\nMedical records are retained in de-identified form as required by healthcare law.\n\nThis cannot be undone. Continue?')) return;
+  const typed = prompt('Type "DELETE MY ACCOUNT" to confirm:');
+  if (typed !== 'DELETE MY ACCOUNT') { showToast('Confirmation did not match — no changes made.', 'error'); return; }
+  try {
+    const token   = Auth.getToken();
+    const refresh = localStorage.getItem('mc_refresh_token');
+    const res = await fetch('/api/gdpr/me', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ confirm: 'DELETE MY ACCOUNT' }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    alert('Your account has been anonymised.\n\nReference: ' + data.reference);
+    Auth.logout();
+    location.reload();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function revokeAllSessions() {
+  if (!confirm('This will log you out on all devices. Continue?')) return;
+  try {
+    const refresh = localStorage.getItem('mc_refresh_token');
+    await API.logout(refresh);
+    Auth.logout();
+    showToast('Logged out from all devices.', 'success');
+    setTimeout(() => location.reload(), 1200);
+  } catch(e) { Auth.logout(); location.reload(); }
+}
+
+function updateNavForUser(user) {
+  const nr = document.getElementById('nav-right');
+  nr.innerHTML = `
+    <div class="user-chip" onclick="toggleUserMenu()">
+      ${user.avatar || (user.role === 'doctor' ? '👨‍⚕️' : '👤')} ${user.name.split(' ')[0]}
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:2px;opacity:.6"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="user-dropdown" id="user-menu">
+        <div style="padding:.6rem 1rem .4rem;font-size:.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.05em">${user.name}</div>
+        ${user.role === 'admin'  ? '<a onclick="window.location.href=\'/admin.html\'"  style="color:#0d9488;font-weight:600">⚙️ Admin Panel</a>'  : ''}
+        ${user.role === 'doctor' ? '<a onclick="window.location.href=\'/doctor.html\'">🏥 Doctor Panel</a>' : ''}
+        <a onclick="requireAuth(()=>showPage(\'appointments\'))">📋 My Appointments</a>
+        <a onclick="requireAuth(()=>showPage(\'chat\'))">💬 Messages</a>
+        <a onclick="requireAuth(()=>{ loadAccountPage(); showPage(\'account\'); })">⚙️ Account Settings</a>
+        <div class="divider"></div>
+        <a onclick="MediCompliance && MediCompliance.exportData ? MediCompliance.exportData() : downloadMyData()" style="color:#0d9488">📥 Download My Data</a>
+        <a onclick="doLogout()" style="color:var(--danger)">🚪 Log Out</a>
+      </div>
+    </div>
+  `;
+}
+
+function toggleUserMenu() {
+  document.getElementById('user-menu')?.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-chip')) document.getElementById('user-menu')?.classList.remove('open');
+});
+
+// ─── Load Doctors ──────────────────────────────────────────────────────────────
+async function loadDoctors() {
+  try {
+    allDoctors = await API.doctors();
+    renderDoctors(allDoctors, 'doctors-grid');
+    renderDoctors(allDoctors.slice(0,4), 'home-doctors');
+    // Update stats
+    const online = allDoctors.filter(d => d.online_status).length;
+    document.getElementById('stat-online').textContent = online;
+  } catch (e) { showToast('Failed to load doctors. Please refresh.', 'error'); }
+}
+
+function renderDoctors(list, containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (!list.length) { el.innerHTML = '<div class="empty-state">No doctors found</div>'; return; }
+  el.innerHTML = list.map(d => `
+    <div class="doctor-card" onclick="openProfile(${d.id})">
+      <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.75rem">
+        <div class="doc-avatar">${d.avatar || '👨‍⚕️'}</div>
+        <div>
+          <div style="font-weight:600;font-size:.95rem">${d.name}</div>
+          <div style="font-size:.8rem;color:var(--primary);font-weight:500">${d.specialty}</div>
+          <div style="font-size:.78rem;color:var(--text3)">${d.hospital}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem">
+        <span class="badge ${d.online_status ? 'badge-online' : 'badge-offline'}">${d.online_status ? '● Online' : '○ Offline'}</span>
+        <span class="badge badge-teal">★ ${d.rating} (${d.total_reviews})</span>
+        <span style="font-size:.78rem;color:var(--text2)">⏱ ${d.experience_years} yrs</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid var(--border)">
+        <div style="font-size:.9rem;font-weight:700;color:var(--primary)">Rs.${d.fee} <span style="font-size:.75rem;color:var(--text3);font-weight:400">/ visit</span></div>
+        <button class="btn btn-primary btn-sm">Book Now</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterDoctors() {
+  const q  = document.getElementById('doc-search').value.toLowerCase();
+  const sp = document.getElementById('spec-filter').value;
+  const av = document.getElementById('avail-filter').value;
+  let list = allDoctors.filter(d => {
+    const mQ  = !q  || (d.name+d.specialty+d.hospital).toLowerCase().includes(q);
+    const mSp = !sp || d.specialty === sp;
+    const mAv = !av || (av === 'true' ? d.online_status : !d.online_status);
+    return mQ && mSp && mAv;
+  });
+  renderDoctors(list, 'doctors-grid');
+}
+
+function setSpecAndGo(spec) {
+  document.getElementById('spec-filter').value = spec;
+  const chips = document.querySelectorAll('#spec-chips .chip');
+  chips.forEach(c => {
+    c.classList.toggle('active', c.textContent.toLowerCase().includes(spec.toLowerCase().slice(0,4)));
+  });
+  filterDoctors();
+  showPage('doctors');
+}
+
+function setSpecChip(el, sp) {
+  document.querySelectorAll('#spec-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('spec-filter').value = sp;
+  filterDoctors();
+}
+
+// ─── Doctor Profile ────────────────────────────────────────────────────────────
+async function openProfile(id) {
+  showPage('profile');
+  document.getElementById('schedule-container').innerHTML = '<div class="spinner"></div>';
+  document.getElementById('booking-cta').style.display = 'none';
+
+  try {
+    const data = await API.doctor(id);
+    currentDoctor = data;
+
+    document.getElementById('prof-avatar').textContent  = data.avatar || '👨‍⚕️';
+    document.getElementById('prof-name').textContent     = data.name;
+    document.getElementById('prof-spec').textContent     = data.specialty;
+    document.getElementById('prof-nmc').textContent      = 'NMC Reg: ' + data.nmc_number;
+    document.getElementById('prof-status').textContent   = data.online_status ? '● Available Online' : '○ Currently Offline';
+    document.getElementById('prof-status').className     = 'badge ' + (data.online_status ? 'badge-online' : 'badge-offline');
+    document.getElementById('prof-rating').textContent   = data.rating;
+    document.getElementById('prof-reviews').textContent  = data.total_reviews;
+    document.getElementById('prof-exp').textContent      = data.experience_years + ' yrs';
+    document.getElementById('prof-fee').textContent      = 'Rs.' + data.fee;
+    document.getElementById('prof-bio').textContent      = data.bio || 'No bio available.';
+    document.getElementById('prof-hosp').textContent     = '🏥 ' + data.hospital;
+    document.getElementById('orig-fee').textContent      = 'Rs. ' + data.fee;
+    document.getElementById('final-fee').textContent     = 'Rs. ' + data.fee;
+    document.getElementById('discount-input').value      = '';
+    document.getElementById('disc-row').style.display    = 'none';
+    discountData = null;
+
+    // Pre-fill user info
+    const user = Auth.getUser();
+    if (user) {
+      document.getElementById('book-name').value  = user.name || '';
+      document.getElementById('book-phone').value = user.phone || '';
+    }
+
+    renderSchedule(data.schedule || []);
+    renderReviews(data.reviews || [], data);
+  } catch (e) {
+    showToast('Failed to load doctor profile', 'error');
+  }
+}
+
+function renderSchedule(schedule) {
+  const physSlots  = [...new Set(schedule.filter(s => s.visit_type === 'physical').map(s => s.time_slot))];
+  const videoSlots = [...new Set(schedule.filter(s => s.visit_type === 'video').map(s => s.time_slot))];
+  const physDays   = [...new Set(schedule.filter(s => s.visit_type === 'physical').map(s => s.day_of_week))];
+  const videoDays  = [...new Set(schedule.filter(s => s.visit_type === 'video').map(s => s.day_of_week))];
+
+  // Set defaults
+  activePhysDay  = physDays[0] || 'Mon';
+  activeVideoDay = videoDays[0] || 'Mon';
+
+  // Set date picker min to today
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  document.getElementById('schedule-container').innerHTML = `
+    <div class="card" style="margin-bottom:1rem">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+        <div style="width:40px;height:40px;background:var(--primary-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem">🏥</div>
+        <div><div style="font-weight:600">${currentDoctor.hospital}</div><div style="font-size:.78rem;color:var(--text3)">📍 Physical Visit</div></div>
+        <span class="badge badge-teal" style="margin-left:auto">Physical</span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+        ${physDays.map((d,i) => `<div class="day-tab ${i===0?'active':''}" onclick="setPhysDay(this,'${d}')">${d}</div>`).join('')}
+      </div>
+      <div style="font-size:.78rem;color:var(--text3);margin-bottom:.5rem">Available slots (click to select)</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        ${physSlots.map(s => `<div class="slot" onclick="selectSlot(this,'${currentDoctor.hospital}','${s}','physical')">${s}</div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+        <div style="width:40px;height:40px;background:var(--accent-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem">📹</div>
+        <div><div style="font-weight:600">Online Video Consultation</div><div style="font-size:.78rem;color:var(--text3)">🌐 Available multiple days</div></div>
+        <span class="badge badge-amber" style="margin-left:auto">Video Call</span>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+        ${(videoDays.length ? videoDays : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']).map((d,i) => `<div class="day-tab ${i===0?'active':''}" onclick="setVideoDay(this,'${d}')">${d}</div>`).join('')}
+      </div>
+      <div style="font-size:.78rem;color:var(--text3);margin-bottom:.5rem">Available time slots</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        ${videoSlots.map(s => `<div class="slot" onclick="selectSlot(this,'Online Video','${s}','video')">${s}</div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function setPhysDay(el, day) {
+  el.parentNode.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activePhysDay = day;
+}
+
+function setVideoDay(el, day) {
+  el.parentNode.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activeVideoDay = day;
+}
+
+function renderReviews(reviews, doctor) {
+  const el = document.getElementById('reviews-container');
+  const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
+  if (!reviews.length) { el.innerHTML = '<div class="empty-state">No reviews yet</div>'; return; }
+  el.innerHTML = `
+    <div style="display:flex;gap:2rem;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)">
+      <div style="text-align:center">
+        <div style="font-size:3rem;font-weight:700;color:var(--primary)">${doctor.rating}</div>
+        <div style="color:#f59e0b">${stars(Math.round(doctor.rating))}</div>
+        <div style="font-size:.78rem;color:var(--text3)">${doctor.total_reviews} reviews</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      ${reviews.map(r => `
+        <div style="padding-bottom:1rem;border-bottom:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.35rem">
+            <span style="font-weight:500;font-size:.85rem">${r.patient_name}</span>
+            <span style="color:#f59e0b;font-size:.8rem">${stars(r.rating)}</span>
+          </div>
+          <div style="font-size:.82rem;color:var(--text2);line-height:1.5">${r.comment || 'No comment'}</div>
+          <div style="font-size:.72rem;color:var(--text3);margin-top:.35rem">${fmtDate(r.created_at)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ─── Booking ──────────────────────────────────────────────────────────────────
+function selectSlot(el, clinic, time, type) {
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Compute the next calendar date for the selected day
+  const day  = type === 'video' ? activeVideoDay : activePhysDay;
+  const date = nextDateForDay(day);
+  currentBooking = { slot: time, clinic, type, date };
+
+  // Pre-fill and constrain the date picker
+  const dateInput = document.getElementById('book-date');
+  if (dateInput) {
+    dateInput.min   = new Date().toISOString().split('T')[0];
+    dateInput.value = date;
+  }
+
+  document.getElementById('btype-physical').classList.toggle('active', type === 'physical');
+  document.getElementById('btype-video').classList.toggle('active', type === 'video');
+  document.getElementById('selected-slot-info').innerHTML =
+    `📅 <strong>${time}</strong> &bull; ${day} &bull; ${type === 'video' ? '📹 Video Consultation' : '🏥 ' + clinic}`;
+  document.getElementById('booking-cta').style.display = 'block';
+  document.getElementById('booking-cta').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function openBookingPanel(type) {
+  setBookingType(type);
+  document.getElementById('booking-cta').style.display = 'block';
+  document.getElementById('booking-cta').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setBookingType(type) {
+  currentBooking.type = type;
+  document.getElementById('btype-physical').classList.toggle('active', type === 'physical');
+  document.getElementById('btype-video').classList.toggle('active', type === 'video');
+}
+
+function selPay(el, method) {
+  document.querySelectorAll('.pay-option').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  payMethod = method;
+}
+
+function handleDiscountInput() {
+  discountData = null;
+  document.getElementById('disc-row').style.display = 'none';
+  document.getElementById('final-fee').textContent = 'Rs. ' + (currentDoctor?.fee || '—');
+  document.getElementById('discount-msg').textContent = '';
+  document.getElementById('discount-msg').style.color = '';
+}
+
+async function applyDiscount() {
+  const code = document.getElementById('discount-input').value.trim();
+  const msgEl = document.getElementById('discount-msg');
+  if (!code) return;
+  try {
+    discountData = await API.validateDiscount(code, currentDoctor?.id);
+    document.getElementById('disc-row').style.display = 'flex';
+    document.getElementById('disc-label').textContent = code.toUpperCase() + ' (' + discountData.discount_percent + '% off)';
+    document.getElementById('disc-val').textContent   = '-Rs. ' + discountData.saving;
+    document.getElementById('final-fee').textContent  = 'Rs. ' + discountData.final_fee;
+    msgEl.textContent = '✅ Discount applied!';
+    msgEl.style.color = 'var(--success)';
+  } catch (e) {
+    msgEl.textContent = '❌ ' + e.message;
+    msgEl.style.color = 'var(--danger)';
+    discountData = null;
+  }
+}
+
+async function confirmBooking() {
+  if (!Auth.isLoggedIn()) { openModal('login-modal'); return; }
+  if (!currentBooking.slot) { showToast('Please select a time slot first', 'error'); return; }
+
+  const name   = document.getElementById('book-name').value.trim();
+  const phone  = document.getElementById('book-phone').value.trim();
+  const reason = document.getElementById('book-reason').value.trim();
+  if (!name || !phone) { showToast('Name and phone are required', 'error'); return; }
+
+  const dateInput = document.getElementById('book-date');
+  const apptDate  = dateInput?.value || currentBooking.date;
+  if (!apptDate) { showToast('Please select an appointment date', 'error'); return; }
+
+  try {
+    const data = await API.bookAppointment({
+      doctor_id:        currentDoctor.id,
+      appointment_date: apptDate,
+      time_slot:        currentBooking.slot,
+      type:             currentBooking.type,
+      reason,
+      clinic_name:      currentBooking.clinic,
+      discount_code:    discountData ? document.getElementById('discount-input').value.trim() : null,
+      payment_method:   payMethod,
+    });
+
+    const appt = data.appointment;
+    document.getElementById('confirm-id').textContent   = data.ref;
+    document.getElementById('confirm-doc').textContent  = currentDoctor.name;
+    document.getElementById('confirm-slot').textContent = currentBooking.slot + ' • ' + apptDate;
+    document.getElementById('confirm-type').textContent = currentBooking.type === 'video' ? 'Video Consultation' : 'Physical at ' + currentBooking.clinic;
+    document.getElementById('confirm-fee').textContent  = 'Rs. ' + appt.final_fee;
+
+    // Handle eSewa payment
+    const fContainer = document.getElementById('esewa-form-container');
+    if (payMethod === 'esewa') {
+      try {
+        const pdata = await API.esewaInitiate(appt.id);
+        fContainer.style.display = 'block';
+        fContainer.innerHTML = `
+          <div style="font-size:.82rem;color:var(--text2);margin-bottom:.5rem;text-align:center">Click below to complete payment via eSewa</div>
+          <form id="esewa-form" action="${pdata.gateway_url}" method="POST">
+            ${Object.entries(pdata.fields).map(([k,v]) => `<input type="hidden" name="${k}" value="${v}"/>`).join('')}
+            <button type="submit" class="btn btn-success btn-full" style="padding:.7rem">⚡ Pay Rs.${appt.final_fee} via eSewa</button>
+          </form>
+        `;
+      } catch { fContainer.style.display = 'none'; }
+    } else {
+      fContainer.style.display = 'none';
+    }
+
+    openModal('booking-modal');
+    document.getElementById('booking-cta').style.display = 'none';
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+  } catch (e) {
+    showToast(e.message || 'Booking failed', 'error');
+  }
+}
+
+// ─── Appointments Page ─────────────────────────────────────────────────────────
+let apptFilter = '';
+async function loadAppointments() {
+  const el = document.getElementById('appt-list');
+  el.innerHTML = '<div class="spinner"></div>';
+  try {
+    const params = apptFilter ? { status: apptFilter } : {};
+    const appts = await API.appointments(params);
+    renderAppointments(appts);
+    document.getElementById('stat-appts').textContent = appts.length + '+';
+  } catch { el.innerHTML = '<div class="empty-state">Could not load appointments</div>'; }
+}
+
+function filterAppts(el, status) {
+  document.querySelectorAll('#page-appointments .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  apptFilter = status;
+  loadAppointments();
+}
+
+function renderAppointments(appts) {
+  const el = document.getElementById('appt-list');
+  if (!appts.length) { el.innerHTML = '<div class="empty-state">No appointments found<br><br><button class="btn btn-primary" onclick="showPage(\'doctors\')">Book Your First Appointment</button></div>'; return; }
+  el.innerHTML = appts.map(a => `
+    <div class="appt-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem">
+        <div>
+          <div style="font-weight:600;font-size:.95rem">${a.doctor_name}</div>
+          <div style="font-size:.8rem;color:var(--text3)">${a.specialty} • ${a.hospital}</div>
+        </div>
+        <span class="badge badge-${a.status}">${a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span>
+      </div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.8rem;color:var(--text2)">
+        <span>📅 ${a.appointment_date}</span>
+        <span>🕐 ${a.time_slot}</span>
+        <span>${a.type === 'video' ? '📹 Video' : '🏥 ' + (a.clinic_name||a.hospital)}</span>
+        <span>💳 Rs.${a.final_fee} (${a.payment_status})</span>
+        <span>🔖 ${a.ref}</span>
+      </div>
+      ${a.notes ? `<div style="margin-top:.75rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:.75rem 1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem">📋 Clinical Notes from Doctor</div>
+        <div style="font-size:.85rem;color:#15803d;line-height:1.6">${escHtml(a.notes)}</div>
+      </div>` : ''}
+      <div class="appt-footer">
+        ${a.type === 'video' && a.status === 'confirmed' ? `<button class="btn btn-primary btn-sm" onclick="callDoctor(${a.doctor_id},'video')">📹 Join Call</button>` : ''}
+        ${a.status === 'pending' && a.payment_status === 'pending' && a.payment_method === 'esewa' ? `<button class="btn btn-success btn-sm" onclick="retryPayment(${a.id})">⚡ Pay via eSewa</button>` : ''}
+        <button class="btn btn-outline btn-sm" onclick="msgDoctor(${a.doctor_id})">💬 Message</button>
+        ${a.status !== 'cancelled' && a.status !== 'completed' ? `<button class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger)" onclick="cancelAppt(${a.id})">✕ Cancel</button>` : `<button class="appt-remove-btn" onclick="removeAppt(${a.id}, this)" title="Remove from list">🗑 Remove</button>`}
+        ${a.status === 'completed' ? `<button class="btn btn-outline btn-sm" onclick="openReviewModal(${a.doctor_id},${a.id})">⭐ Leave Review</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function cancelAppt(id) {
+  if (!confirm('Cancel this appointment?')) return;
+  try {
+    await API.cancelAppt(id);
+    showToast('Appointment cancelled', 'success');
+    loadAppointments();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function removeAppt(id, btn) {
+  if (!confirm('Remove this appointment from your list?')) return;
+  try {
+    await API.deleteAppt(id);
+    // Remove the card from DOM
+    const card = btn.closest('.appt-card, [class*="card"], .appt-item') || btn.closest('div[style]') || btn.parentElement.parentElement;
+    card.style.transition = 'opacity .3s, transform .3s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(.95)';
+    setTimeout(() => { card.remove(); showToast('Appointment removed', 'success'); }, 300);
+  } catch(e) { showToast(e.message || 'Could not remove appointment', 'error'); }
+}
+
+async function retryPayment(apptId) {
+  try {
+    const pdata = await API.esewaInitiate(apptId);
+    const f = document.createElement('form');
+    f.action = pdata.gateway_url;
+    f.method = 'POST';
+    Object.entries(pdata.fields).forEach(([k,v]) => {
+      const i = document.createElement('input');
+      i.type = 'hidden'; i.name = k; i.value = v;
+      f.appendChild(i);
+    });
+    document.body.appendChild(f);
+    f.submit();
+  } catch (e) { showToast(e.message, 'error'); }
+}
+
+// Find doctor user_id by doctor id to start chat
+async function msgDoctor(doctorId) {
+  try {
+    const doc = await API.doctor(doctorId);
+    requireAuth(() => { showPage('chat'); openChat(doc.user_id, doc.name, doc.avatar || '👨‍⚕️', doc.specialty); });
+  } catch (e) { showToast(e.message || 'Could not load doctor profile.', 'error'); }
+}
+
+async function callDoctor(doctorId, type) {
+  requireAuth(async () => {
+    try {
+      const doc = await API.doctor(doctorId);
+      WebRTCCall.start(doc.user_id, doc.name, doc.avatar || '👨‍⚕️', type || 'video');
+    } catch { showToast('Could not reach doctor', 'error'); }
+  });
+}
+
+// ─── Chat ─────────────────────────────────────────────────────────────────────
+async function loadConversations(autoOpen = false) {
+  if (!Auth.isLoggedIn()) return;
+  const listEl = document.getElementById('chat-list');
+  try {
+    const convos = await API.conversations();
+    if (!convos.length) { listEl.innerHTML = '<div style="padding:1rem;font-size:.83rem;color:var(--text3)">No conversations yet.<br>Book an appointment and message your doctor.</div>'; return; }
+    listEl.innerHTML = convos.map(c => `
+      <div class="chat-convo ${chatOtherId === c.other_id ? 'active' : ''}" onclick="openChat(${c.other_id},'${escHtml(c.other_name)}','${c.other_role === 'doctor' ? '👨‍⚕️' : '👤'}','${c.other_role}')">
+        <div class="chat-convo-avatar">${c.other_role === 'doctor' ? '👨‍⚕️' : '👤'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="chat-convo-name">${escHtml(c.other_name)}</div>
+          <div class="chat-convo-preview">${escHtml(c.last_message || '...')}</div>
+        </div>
+        ${c.unread_count > 0 ? `<div class="unread-dot">${c.unread_count}</div>` : ''}
+      </div>
+    `).join('');
+    // Auto-open most recent conversation if none is open yet
+    if (autoOpen && !chatOtherId && convos.length) {
+      const first = convos[0];
+      openChat(first.other_id, first.other_name, first.other_role === 'doctor' ? '👨‍⚕️' : '👤', first.other_role);
+    }
+  } catch { listEl.innerHTML = '<div style="padding:1rem;font-size:.83rem;color:var(--text3)">Failed to load conversations</div>'; }
+}
+
+async function openChat(userId, name, avatar, role) {
+  chatOtherId = Number(userId);
+  const user  = Auth.getUser();
+  document.getElementById('chat-main').innerHTML = `
+    <div class="chat-header">
+      <div class="chat-convo-avatar">${avatar}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:.9rem">${name}</div>
+        <div id="chat-status" style="font-size:.75rem;color:${Chat?.isOnline(userId) ? 'var(--success)' : 'var(--text3)'}">● ${Chat?.isOnline(userId) ? 'Online' : 'Offline'}</div>
+      </div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','${avatar}','audio')" style="padding:.35rem .6rem;font-size:.85rem">🎵</button>
+        <button class="btn btn-primary btn-sm" title="Video Call"  onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','${avatar}','video')" style="padding:.35rem .6rem;font-size:.85rem">📹</button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages"><div class="spinner"></div></div>
+    <div class="typing-indicator" id="typing-indicator"></div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){sendMsg();event.preventDefault()}" oninput="emitTyping()"/>
+      <button class="chat-send" onclick="sendMsg()">▶</button>
+    </div>
+  `;
+
+  // Load history
+  const msgsEl = document.getElementById('chat-messages');
+  try {
+    const msgs = await API.messages(userId);
+    if (!msgs.length) { msgsEl.innerHTML = '<div class="empty-state" style="padding:2rem">Send a message to start the conversation</div>'; }
+    else { msgsEl.innerHTML = msgs.map(m => renderMessage(m, user.id)).join(''); scrollChatToBottom(msgsEl); }
+    if (Chat) Chat.markRead(userId);
+  } catch { msgsEl.innerHTML = '<div class="empty-state">Failed to load messages</div>'; }
+
+  // Update conversation list
+  document.querySelectorAll('.chat-convo').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.chat-convo').forEach(c => {
+    if (c.textContent.includes(name)) c.classList.add('active');
+  });
+
+  // Update status listener
+  if (Chat) {
+    Chat.activeConvo = chatOtherId;
+    Chat.onStatus = (uid, online) => {
+      if (uid === chatOtherId) {
+        const stEl = document.getElementById('chat-status');
+        if (stEl) stEl.innerHTML = `● ${online ? '<span style="color:var(--success)">Online</span>' : '<span style="color:var(--text3)">Offline</span>'}`;
+      }
+    };
+  }
+
+  loadConversations();
+}
+
+function sendMsg() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if (!txt || !chatOtherId) return;
+  inp.value = '';
+
+  const sent = Chat?.send(chatOtherId, txt);
+  if (!sent) {
+    // Fallback to REST
+    API.sendMsg(chatOtherId, txt).then(msg => {
+      const msgsEl = document.getElementById('chat-messages');
+      msgsEl.innerHTML += renderMessage(msg, Auth.getUser().id);
+      scrollChatToBottom(msgsEl);
+    }).catch(e => showToast(e.message, 'error'));
+  }
+}
+
+function emitTyping() {
+  if (chatOtherId && Chat) Chat.emitTyping(chatOtherId);
+}
+
+function startChatWithDoctor() {
+  if (!currentDoctor) return;
+  requireAuth(() => { showPage('chat'); openChat(currentDoctor.user_id, currentDoctor.name, currentDoctor.avatar || '👨‍⚕️', 'doctor'); });
+}
+
+// Wire Chat.onMessage for live delivery
+function setupChatListener() {
+  if (!Chat) return;
+  Chat.onMessage = (msg) => {
+    const msgsEl = document.getElementById('chat-messages');
+    const user   = Auth.getUser();
+    if (msgsEl && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
+      const empty = msgsEl.querySelector('.empty-state');
+      if (empty) empty.remove();
+      msgsEl.innerHTML += renderMessage(msg, user.id);
+      scrollChatToBottom(msgsEl);
+      if (msg.sender_id === chatOtherId && Chat) Chat.markRead(chatOtherId);
+    }
+    if (msg.sender_id !== user.id) {
+      loadConversations();
+      pollUnread();
+    }
+  };
+}
+
+// ─── Unread polling ────────────────────────────────────────────────────────────
+let unreadTimer;
+async function pollUnread() {
+  if (!Auth.isLoggedIn()) return;
+  try {
+    const { count } = await API.unreadCount();
+    const el = document.getElementById('nav-unread');
+    if (el) { el.textContent = count; el.style.display = count > 0 ? 'inline' : 'none'; }
+  } catch {}
+  clearTimeout(unreadTimer);
+  unreadTimer = setTimeout(pollUnread, 15000);
+}
+
+// ─── BMI ──────────────────────────────────────────────────────────────────────
+function calcBMI() {
+  const h = parseFloat(document.getElementById('height-cm').value);
+  const w = parseFloat(document.getElementById('weight-kg').value);
+  const box = document.getElementById('bmi-result-box');
+  if (!h || !w || h < 50 || h > 250 || w < 10 || w > 500) { box.style.display = 'none'; return; }
+  const bmi = w / ((h/100)**2);
+  let cat, color;
+  if (bmi < 18.5)       { cat='Underweight'; color='#3b82f6'; }
+  else if (bmi < 25)    { cat='Normal Weight'; color='var(--success)'; }
+  else if (bmi < 30)    { cat='Overweight'; color='var(--accent)'; }
+  else                  { cat='Obese'; color='var(--danger)'; }
+  document.getElementById('bmi-value').textContent = bmi.toFixed(1);
+  document.getElementById('bmi-value').style.color = color;
+  document.getElementById('bmi-cat').textContent   = cat;
+  box.style.display = 'block';
+}
+
+function setGoal(el, g) {
+  document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  currentGoal = g;
+}
+function quickAdd(i) { if (!ingredients.includes(i)) { ingredients.push(i); renderTags(); } }
+function addIngredient() {
+  const inp = document.getElementById('ing-input');
+  inp.value.split(',').forEach(v => { const t=v.trim(); if(t&&!ingredients.includes(t)) ingredients.push(t); });
+  renderTags(); inp.value='';
+}
+function removeIng(i) { ingredients.splice(i,1); renderTags(); }
+function renderTags() {
+  document.getElementById('ing-tags').innerHTML = ingredients.map((t,i) =>
+    `<span class="ing-tag">${t} <span onclick="removeIng(${i})" style="cursor:pointer">×</span></span>`
+  ).join('');
+}
+
+function generateRecipes() {
+  if (!ingredients.length) { showToast('Add at least one ingredient', 'error'); return; }
+  const recs = RECIPES[currentGoal] || RECIPES.bulk;
+  const labels = { bulk:'Bulking','lean-bulk':'Lean Bulk', cut:'Cutting', maintain:'Maintain' };
+  const cals   = { bulk:'~3,000–3,500 kcal/day','lean-bulk':'~2,500–2,800 kcal/day', cut:'~1,800–2,200 kcal/day', maintain:'~2,200–2,600 kcal/day' };
+
+  document.getElementById('recipe-right').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-weight:600;font-size:1rem">Recipes for ${labels[currentGoal]}</div>
+      <span class="badge badge-teal">${labels[currentGoal]}</span>
+    </div>
+    <div style="background:var(--primary-light);border-radius:var(--radius-sm);padding:.75rem 1rem;margin-bottom:1rem;font-size:.83rem;color:var(--primary-dark);font-weight:500">
+      🎯 <strong>${labels[currentGoal]}:</strong> ${cals[currentGoal]}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem">
+      ${recs.map(r => {
+        const matched = r.ings.filter(i => ingredients.some(u => u.toLowerCase().includes(i.toLowerCase())||i.toLowerCase().includes(u.toLowerCase())));
+        return `<div class="card card-hover">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem">
+            <div>
+              <div style="font-weight:600;font-size:1rem;margin-bottom:.2rem">${r.name}</div>
+              <div style="font-size:.82rem;color:var(--text2);line-height:1.5">${r.desc}</div>
+            </div>
+            <span class="badge badge-teal" style="white-space:nowrap;margin-left:.75rem">${matched.length}/${r.ings.length}</span>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;font-size:.75rem;color:var(--text2)">
+            <span>⏱ ${r.time}</span><span>👥 Serves ${r.serves}</span><span>🔥 ${r.cal} kcal</span>
+          </div>
+          <div class="macros">
+            <div class="macro"><div class="macro-val">${r.cal}</div><div class="macro-lbl">Calories</div></div>
+            <div class="macro"><div class="macro-val">${r.protein}g</div><div class="macro-lbl">Protein</div></div>
+            <div class="macro"><div class="macro-val">${r.carbs}g</div><div class="macro-lbl">Carbs</div></div>
+            <div class="macro"><div class="macro-val">${r.fat}g</div><div class="macro-lbl">Fat</div></div>
+          </div>
+          <div style="margin-top:.75rem">
+            <div style="font-size:.75rem;color:var(--text3);margin-bottom:.35rem">Ingredients:</div>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+              ${r.ings.map(i => {
+                const m = ingredients.some(u => u.toLowerCase().includes(i.toLowerCase())||i.toLowerCase().includes(u.toLowerCase()));
+                return `<span style="background:${m?'var(--primary-light)':'var(--bg)'};border:1px solid ${m?'var(--primary)':'var(--border)'};color:${m?'var(--primary-dark)':'var(--text2)'};padding:.2rem .6rem;border-radius:20px;font-size:.72rem">${m?'✓ ':''} ${i}</span>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+  showToast('Recipes generated for ' + labels[currentGoal] + '!', 'success');
+}
+
+
+// ─── Tab helpers ──────────────────────────────────────────────────────────────
+function switchTab(el, tabId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['tab-schedule','tab-reviews'].forEach(id => {
+    document.getElementById(id).style.display = id === tabId ? 'block' : 'none';
+  });
+}
+
+function openReviewModal(docId, apptId) {
+  // Simple inline review
+  const rating = prompt('Rate your experience (1-5 stars):');
+  const comment = prompt('Leave a comment (optional):');
+  if (!rating || isNaN(rating) || rating < 1 || rating > 5) return;
+  API.leaveReview(docId, { rating: parseInt(rating), comment: comment||'', appointment_id: apptId })
+    .then(() => showToast('Review submitted! Thank you.', 'success'))
+    .catch(e => showToast(e.message, 'error'));
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+async function init() {
+  loadDoctors();
+
+  // Check if returning from payment
+  const goto = localStorage.getItem('mc_goto');
+  if (goto) { localStorage.removeItem('mc_goto'); }
+
+  const user = Auth.getUser();
+  if (user && Auth.getToken()) {
+    updateNavForUser(user);
+    initChat(Auth.getToken(), user);
+    WebRTCCall.init(Chat.socket, user);
+    setupChatListener();
+    pollUnread();
+    if (goto) showPage(goto);
+  }
+}
+init();
+</script>
+<script src="/js/compliance.js"></script>
+</body>
+</html>
