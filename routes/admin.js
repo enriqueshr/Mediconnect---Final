@@ -76,6 +76,19 @@ router.post('/doctors', (req, res) => {
   res.json({ message: 'Doctor created', doctor_id: did });
 });
 
+// Create patient
+router.post('/patients', (req, res) => {
+  const { name, email, phone, password = 'Patient@123' } = req.body;
+  if (!name || !email) return res.status(400).json({ error: 'Name and email are required' });
+
+  const exists = db.prepare('SELECT id FROM users WHERE email=?').get(email);
+  if (exists) return res.status(409).json({ error: 'Email already registered' });
+
+  const hash = bcrypt.hashSync(password, 10);
+  const uid  = db.prepare(`INSERT INTO users (name,email,phone,password_hash,role) VALUES (?,?,?,?,'patient')`).run(name, email, phone || null, hash).lastInsertRowid;
+  res.status(201).json({ message: 'Patient created', id: uid });
+});
+
 // All appointments
 router.get('/appointments', (req, res) => {
   const { status, date, q } = req.query;

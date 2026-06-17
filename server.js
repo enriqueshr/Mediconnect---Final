@@ -152,7 +152,7 @@ const io = new Server(server, {
     origin: ALLOWED_ORIGINS,
     methods: ['GET','POST'],
   },
-  maxHttpBufferSize: 1e5, // 100 KB max message size
+  maxHttpBufferSize: 5e6, // 5 MB (supports image/voice messages)
 });
 
 const onlineUsers = new Map();
@@ -179,7 +179,7 @@ io.on('connection', (socket) => {
   socket.on('send_message', ({ to, content }) => {
     try {
       if (!to || !content || typeof content !== 'string') return;
-      if (content.length > 5000) return socket.emit('error', { message: 'Message too long' });
+      if (content.length > 2000000) return socket.emit('error', { message: 'Message too long' });
 
       const db = require('./db');
       const encContent = encrypt(content.trim());

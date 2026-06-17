@@ -46,6 +46,7 @@ body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
     <button class="sidebar-link" onclick="showPanel('patients')"><span class="icon">👥</span> Patients</button>
     <button class="sidebar-link" onclick="showPanel('messages')"><span class="icon">💬</span> Messages <span id="side-unread" style="display:none;background:var(--danger);color:#fff;border-radius:10px;padding:0 6px;font-size:.7rem;margin-left:auto"></span></button>
     <button class="sidebar-link" onclick="showPanel('schedule')"><span class="icon">🗓️</span> Schedule</button>
+    <button class="sidebar-link" onclick="showPanel('notes-history')"><span class="icon">📋</span> Notes History</button>
     <button class="sidebar-link" onclick="showPanel('profile')"><span class="icon">👨‍⚕️</span> My Profile</button>
   </nav>
   <div class="sidebar-bottom">
@@ -151,6 +152,12 @@ body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
       </div>
     </div>
 
+    <!-- ─── NOTES HISTORY ─── -->
+    <div class="page" id="panel-notes-history">
+      <div class="page-header"><div class="page-title">Clinical Notes History</div><div class="page-subtitle">All notes you've written for patients</div></div>
+      <div id="notes-history-list"><div class="spinner"></div></div>
+    </div>
+
     <!-- ─── SCHEDULE ─── -->
     <div class="page" id="panel-schedule">
       <div class="page-header"><div class="page-title">My Schedule</div><div class="page-subtitle">View your availability slots</div></div>
@@ -180,6 +187,17 @@ body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Patient History modal -->
+<div class="modal-overlay" id="patient-history-modal">
+  <div class="modal" style="max-width:640px;max-height:80vh;display:flex;flex-direction:column">
+    <div class="modal-header" style="flex-shrink:0">
+      <div class="modal-title" id="ph-title">Patient History</div>
+      <button class="modal-close" onclick="closeModal('patient-history-modal')">×</button>
+    </div>
+    <div id="ph-body" style="overflow-y:auto;flex:1;padding-top:.5rem"></div>
   </div>
 </div>
 
@@ -244,15 +262,16 @@ function showPanel(p) {
   document.querySelectorAll('.sidebar-link').forEach(e => e.classList.remove('active'));
   document.getElementById('panel-' + p)?.classList.add('active');
   const links = document.querySelectorAll('.sidebar-link');
-  const map   = { dashboard:0, appointments:1, patients:2, messages:3, schedule:4, profile:5 };
+  const map   = { dashboard:0, appointments:1, patients:2, messages:3, 'notes-history':4, schedule:5, profile:6 };
   if (map[p] !== undefined) links[map[p]]?.classList.add('active');
   document.getElementById('topbar-title').textContent = p.charAt(0).toUpperCase() + p.slice(1);
 
   if (p === 'appointments') loadAppts();
   if (p === 'patients')     loadPatients();
   if (p === 'messages')     loadDocConversations();
-  if (p === 'schedule')     loadSchedule();
-  if (p === 'profile')      loadProfile();
+  if (p === 'schedule')      loadSchedule();
+  if (p === 'notes-history') loadNotesHistory();
+  if (p === 'profile')       loadProfile();
 }
 
 function openModal(id) { document.getElementById(id)?.classList.add('open'); }
@@ -403,10 +422,53 @@ async function loadPatients() {
         <td>${p.patient_phone||'—'}</td>
         <td>${p.appointment_date} • ${p.time_slot}</td>
         <td>${p.count}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="openDocChat(${p.patient_id},'${p.patient_name}')">💬 Message</button></td>
+        <td style="display:flex;gap:.4rem;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="openPatientHistory(${p.patient_id},'${p.patient_name.replace(/'/g,"\\'")}')" style="color:var(--primary)">📋 History</button>
+          <button class="btn btn-outline btn-sm" onclick="openDocChat(${p.patient_id},'${p.patient_name.replace(/'/g,"\\'")}')">💬 Message</button>
+        </td>
       </tr>
     `).join('');
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+async function openPatientHistory(patientId, patientName) {
+  const modal = document.getElementById('patient-history-modal');
+  document.getElementById('ph-title').textContent = '📋 ' + patientName + ' — Clinical History';
+  document.getElementById('ph-body').innerHTML = '<div class="spinner" style="margin:2rem auto"></div>';
+  modal.classList.add('open');
+  try {
+    const appts = await API.appointments();
+    const mine  = appts.filter(a => a.patient_id === patientId);
+    if (!mine.length) {
+      document.getElementById('ph-body').innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text3)">No appointments with this patient yet.</div>';
+      return;
+    }
+    document.getElementById('ph-body').innerHTML = mine.map(a => `
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:.75rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+          <div>
+            <span style="font-weight:600">${a.appointment_date}</span>
+            <span style="color:var(--text3);font-size:.82rem"> • ${a.time_slot} • ${a.type === 'video' ? '📹 Video' : '🏥 Physical'}</span>
+          </div>
+          <div style="display:flex;gap:.4rem;align-items:center">
+            <span class="badge badge-${a.status}" style="font-size:.7rem">${a.status}</span>
+            <span style="font-size:.72rem;color:var(--text3)">${a.ref}</span>
+          </div>
+        </div>
+        ${a.notes ? `
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:.65rem .85rem;margin-top:.5rem">
+            <div style="font-size:.7rem;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem">📋 Clinical Note</div>
+            <div style="font-size:.84rem;color:#15803d;line-height:1.65;white-space:pre-wrap">${escHtml(a.notes)}</div>
+          </div>
+        ` : `<div style="font-size:.78rem;color:var(--text3);margin-top:.35rem;font-style:italic">No clinical note for this visit.</div>`}
+        <div style="margin-top:.6rem;text-align:right">
+          <button class="btn btn-outline btn-sm" onclick="openNotesModal(${a.id},'${(a.notes||'').replace(/'/g,"\\'").replace(/\n/g,'\\n')}')">✏️ ${a.notes ? 'Edit Note' : 'Add Note'}</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    document.getElementById('ph-body').innerHTML = '<div style="color:var(--danger);padding:1rem">' + e.message + '</div>';
+  }
 }
 
 // ─── Messages / Chat ──────────────────────────────────────────────────────────
@@ -436,18 +498,23 @@ async function openDocChat(userId, name) {
       <div class="chat-convo-avatar">👤</div>
       <div style="flex:1"><div style="font-weight:600;font-size:.9rem">${name}</div><div id="chat-status" style="font-size:.75rem;color:var(--text3)">Patient</div></div>
       <div style="display:flex;gap:.5rem">
-        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','👤','audio')" style="padding:.35rem .6rem;font-size:.85rem">🎵</button>
+        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','👤','audio')" style="padding:.35rem .6rem;font-size:.85rem">📞</button>
         <button class="btn btn-primary btn-sm" title="Video Call"  onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','👤','video')" style="padding:.35rem .6rem;font-size:.85rem">📹</button>
       </div>
     </div>
     <div class="chat-messages" id="doc-chat-msgs"><div class="spinner"></div></div>
+    <button class="chat-scroll-btn" id="doc-chat-scroll-btn" title="Scroll to bottom" onclick="scrollChatToBottom(document.getElementById('doc-chat-msgs'))">↓</button>
     <div class="typing-indicator" id="typing-indicator"></div>
     <div class="chat-input-area">
+      <input type="file" id="doc-img-pick" accept="image/*" style="display:none" onchange="sendImageMsg(this,'doc-chat-msgs',chatOtherId)"/>
+      <button class="chat-media-btn" title="Send image" onclick="document.getElementById('doc-img-pick').click()">📷</button>
+      <button class="chat-media-btn" id="voice-btn" title="Record voice message" onclick="toggleVoice('doc-chat-msgs',chatOtherId)">🎙️</button>
       <input class="chat-input" id="doc-chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendDocMsg();event.preventDefault()}" oninput="if(Chat)Chat.emitTyping(chatOtherId)"/>
       <button class="chat-send" onclick="sendDocMsg()">▶</button>
     </div>
   `;
   const msgsEl = document.getElementById('doc-chat-msgs');
+  setupScrollButton(msgsEl, 'doc-chat-scroll-btn');
   try {
     const msgs = await API.messages(userId);
     if (!msgs.length) msgsEl.innerHTML = '<div class="empty-state" style="padding:2rem">No messages yet</div>';
@@ -462,24 +529,98 @@ function sendDocMsg() {
   const txt = inp.value.trim();
   if (!txt || !chatOtherId) return;
   inp.value = '';
-  const sent = Chat?.send(chatOtherId, txt);
-  if (!sent) {
-    API.sendMsg(chatOtherId, txt).then(msg => {
-      const el = document.getElementById('doc-chat-msgs');
-      if (el) { el.innerHTML += renderMessage(msg, Auth.getUser().id); scrollChatToBottom(el); }
-    });
+
+  const user = Auth.getUser();
+  const el   = document.getElementById('doc-chat-msgs');
+  if (el) {
+    const empty = el.querySelector('.empty-state');
+    if (empty) empty.remove();
+    el.innerHTML += renderMessage({ sender_id: user.id, receiver_id: chatOtherId, content: txt, created_at: new Date().toISOString() }, user.id);
+    scrollChatToBottom(el);
   }
+
+  if (!Chat?.send(chatOtherId, txt)) {
+    API.sendMsg(chatOtherId, txt).catch(e => showToast(e.message, 'error'));
+  }
+  loadDocConversations();
+}
+
+function sendImageMsg(input, msgsElId, toId) {
+  const file = input.files[0];
+  if (!file || !toId) return;
+  input.value = '';
+  if (file.size > 8 * 1024 * 1024) return showToast('Image too large (max 8 MB)', 'error');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 900;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      sendDocMediaContent(canvas.toDataURL('image/jpeg', 0.8), msgsElId, toId);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+let _mediaRecorder = null, _audioChunks = [], _voiceMsgsElId = null, _voiceToId = null;
+function toggleVoice(msgsElId, toId) {
+  if (_mediaRecorder && _mediaRecorder.state === 'recording') {
+    _mediaRecorder.stop();
+  } else {
+    _voiceMsgsElId = msgsElId;
+    _voiceToId = toId;
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      _audioChunks = [];
+      _mediaRecorder = new MediaRecorder(stream);
+      _mediaRecorder.ondataavailable = e => _audioChunks.push(e.data);
+      _mediaRecorder.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(_audioChunks, { type: 'audio/webm' });
+        const r = new FileReader();
+        r.onload = (e) => sendDocMediaContent(e.target.result, _voiceMsgsElId, _voiceToId);
+        r.readAsDataURL(blob);
+        const btn = document.getElementById('voice-btn');
+        if (btn) btn.textContent = '🎙️';
+      };
+      _mediaRecorder.start();
+      const btn = document.getElementById('voice-btn');
+      if (btn) btn.textContent = '⏹️';
+    }).catch(() => showToast('Microphone access denied', 'error'));
+  }
+}
+
+function sendDocMediaContent(dataUrl, msgsElId, toId) {
+  const user = Auth.getUser();
+  const el = document.getElementById(msgsElId);
+  if (el) {
+    const empty = el.querySelector('.empty-state');
+    if (empty) empty.remove();
+    el.innerHTML += renderMessage({ sender_id: user.id, receiver_id: toId, content: dataUrl, created_at: new Date().toISOString() }, user.id);
+    scrollChatToBottom(el);
+  }
+  if (!Chat?.send(toId, dataUrl)) {
+    API.sendMsg(toId, dataUrl).catch(e => showToast(e.message, 'error'));
+  }
+  loadDocConversations();
 }
 
 function onNewMessage(msg) {
   const user = Auth.getUser();
   const el   = document.getElementById('doc-chat-msgs');
-  if (el && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
+  if (el && msg.sender_id !== user.id && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
     const empty = el.querySelector('.empty-state');
     if (empty) empty.remove();
     el.innerHTML += renderMessage(msg, user.id);
     scrollChatToBottom(el);
-    if (msg.sender_id === chatOtherId && Chat) Chat.markRead(chatOtherId);
+    if (Chat) Chat.markRead(chatOtherId);
   }
   if (msg.sender_id !== user.id) { loadDocConversations(); pollUnread(); }
 }
@@ -560,6 +701,37 @@ async function removeSlot(slotId) {
     showToast('Slot removed', 'success');
     loadSchedule();
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+// ─── Notes History ────────────────────────────────────────────────────────────
+async function loadNotesHistory() {
+  const el = document.getElementById('notes-history-list');
+  try {
+    const appts = await API.appointments();
+    const withNotes = appts.filter(a => a.notes && a.notes.trim());
+    if (!withNotes.length) {
+      el.innerHTML = '<div class="card card-lg" style="text-align:center;padding:2rem;color:var(--text3)">No clinical notes written yet.</div>';
+      return;
+    }
+    el.innerHTML = withNotes.map(a => `
+      <div class="card card-lg" style="margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem">
+          <div>
+            <div style="font-weight:600">${a.patient_name}</div>
+            <div style="font-size:.78rem;color:var(--text3)">${a.appointment_date} • ${a.time_slot} • ${a.type === 'video' ? '📹 Video' : '🏥 Physical'}</div>
+          </div>
+          <span class="badge badge-confirmed">Ref: ${a.ref}</span>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);padding:.75rem 1rem">
+          <div style="font-size:.72rem;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem">📋 Clinical Note</div>
+          <div style="font-size:.88rem;color:#15803d;line-height:1.7;white-space:pre-wrap">${escHtml(a.notes)}</div>
+        </div>
+        <div style="margin-top:.6rem;text-align:right">
+          <button class="btn btn-outline btn-sm" onclick="openNotesModal(${a.id},'${(a.notes||'').replace(/'/g,"\\'")}')" >✏️ Edit Note</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (e) { el.innerHTML = '<div class="card card-lg" style="color:var(--danger)">Failed to load notes history</div>'; }
 }
 
 // ─── Profile ──────────────────────────────────────────────────────────────────

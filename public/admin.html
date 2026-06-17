@@ -150,8 +150,9 @@ body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
         <div class="page-title">Patients</div>
         <div class="page-subtitle">Registered patient accounts</div>
       </div>
-      <div class="card" style="margin-bottom:1rem">
-        <input class="form-input" id="user-search" placeholder="🔍 Search by name or email..." oninput="loadUsers()" style="max-width:320px"/>
+      <div class="card" style="margin-bottom:1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+        <input class="form-input" id="user-search" placeholder="🔍 Search by name or email..." oninput="loadUsers()" style="flex:1;min-width:200px"/>
+        <button class="btn btn-primary btn-sm" onclick="openAddPatientModal()">+ Add Patient</button>
       </div>
       <div class="card" style="overflow:hidden">
         <div class="table-wrap">
@@ -261,6 +262,22 @@ body{display:flex;flex-direction:row;min-height:100vh;background:var(--bg)}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- Add Patient Modal -->
+<div class="modal-overlay" id="add-patient-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">Add New Patient</div>
+      <button class="modal-close" onclick="closeAddPatientModal()">×</button>
+    </div>
+    <div id="add-patient-err" class="form-error"></div>
+    <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="np-name" placeholder="e.g. Ram Thapa"/></div>
+    <div class="form-group"><label class="form-label">Email Address *</label><input class="form-input" id="np-email" type="email" placeholder="ram@example.com"/></div>
+    <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="np-phone" placeholder="+977-98XXXXXXXX"/></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="np-pass" type="password" placeholder="Default: Patient@123"/></div>
+    <button class="btn btn-primary btn-full" onclick="submitAddPatient()">Create Patient Account</button>
+  </div>
+</div>
 
 <script src="/js/api.js"></script>
 <script>
@@ -421,6 +438,32 @@ async function deleteUser(id, name) {
     showToast('User deleted', 'success');
     loadUsers();
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+function openAddPatientModal() {
+  document.getElementById('np-name').value = '';
+  document.getElementById('np-email').value = '';
+  document.getElementById('np-phone').value = '';
+  document.getElementById('np-pass').value = '';
+  document.getElementById('add-patient-err').textContent = '';
+  document.getElementById('add-patient-modal').classList.add('open');
+}
+function closeAddPatientModal() {
+  document.getElementById('add-patient-modal').classList.remove('open');
+}
+async function submitAddPatient() {
+  const name  = document.getElementById('np-name').value.trim();
+  const email = document.getElementById('np-email').value.trim();
+  const phone = document.getElementById('np-phone').value.trim();
+  const pass  = document.getElementById('np-pass').value.trim();
+  const errEl = document.getElementById('add-patient-err');
+  if (!name || !email) { errEl.textContent = 'Name and email are required'; return; }
+  try {
+    await API.adminCreatePatient({ name, email, phone: phone||undefined, password: pass||undefined });
+    showToast('Patient account created', 'success');
+    closeAddPatientModal();
+    loadUsers();
+  } catch (e) { errEl.textContent = e.message; }
 }
 
 // ─── Appointments ─────────────────────────────────────────────────────────────

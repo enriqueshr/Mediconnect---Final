@@ -79,8 +79,17 @@ function initChat(token, user) {
 function renderMessage(msg, currentUserId) {
   const mine = msg.sender_id === currentUserId;
   const time  = new Date(msg.created_at).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  const c = msg.content || '';
+  let body;
+  if (c.startsWith('data:image/')) {
+    body = `<img src="${c}" style="max-width:220px;max-height:220px;border-radius:8px;display:block;cursor:pointer" onclick="this.style.maxWidth=this.style.maxWidth==='100%'?'220px':'100%'" loading="lazy" />`;
+  } else if (c.startsWith('data:audio/')) {
+    body = `<audio controls style="max-width:240px;width:100%"><source src="${c}"></audio>`;
+  } else {
+    body = escHtml(c);
+  }
   return `<div class="msg ${mine ? 'msg-out' : 'msg-in'}">
-    ${escHtml(msg.content)}
+    ${body}
     <div class="msg-time">${time}</div>
   </div>`;
 }
@@ -91,4 +100,14 @@ function escHtml(s) {
 
 function scrollChatToBottom(el) {
   if (el) el.scrollTop = el.scrollHeight;
+}
+
+function setupScrollButton(msgsEl, btnId) {
+  if (!msgsEl) return;
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  msgsEl.addEventListener('scroll', () => {
+    const nearBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight < 80;
+    btn.style.display = nearBottom ? 'none' : 'flex';
+  });
 }

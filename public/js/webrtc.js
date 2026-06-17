@@ -384,7 +384,7 @@ const WebRTCCall = (() => {
       const incType   = document.getElementById('wrtc-inc-type');
       if (incAvatar) incAvatar.textContent = remoteAvatar;
       if (incName)   incName.textContent   = fromName;
-      if (incType)   incType.textContent   = ct === 'audio' ? '🎵 Audio Call' : '📹 Video Call';
+      if (incType)   incType.textContent   = ct === 'audio' ? '📞 Audio Call' : '📹 Video Call';
       showIncoming(true);
 
       autoRejectTimer = setTimeout(() => {
