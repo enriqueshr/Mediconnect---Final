@@ -86,7 +86,7 @@ router.post('/', auth, (req, res) => {
   const { to, content } = req.body;
   if (!to || !content)               return res.status(400).json({ error: 'to and content required' });
   if (typeof content !== 'string')   return res.status(400).json({ error: 'content must be a string' });
-  if (content.length > 5000)         return res.status(400).json({ error: 'Message too long (max 5000 chars)' });
+  if (content.length > 2000000)      return res.status(400).json({ error: 'Message too long' });
 
   const receiver = db.prepare('SELECT id,name,role FROM users WHERE id=?').get(to);
   if (!receiver) return res.status(404).json({ error: 'Recipient not found' });

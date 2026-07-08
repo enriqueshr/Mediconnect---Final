@@ -84,6 +84,7 @@ const API = {
   adminDeleteCode:  (id)         => API.del('/admin/discounts/' + id),
   adminVerifyDoc:   (id, v)      => API.patch('/admin/doctors/' + id + '/verify', { verified: v }),
   adminDeleteUser:  (id)         => API.del('/admin/users/' + id),
+  adminCreatePatient: (data)     => API.post('/admin/patients', data),
 };
 
 // ─── Auth State ───────────────────────────────────────────────────────────────

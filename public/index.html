@@ -1226,6 +1226,10 @@ function showPage(p) {
   if (p === 'appointments') loadAppointments();
   if (p === 'chat')         loadConversations(true);
   if (p === 'doctors')      loadDoctors();
+
+  // Hide footer on chat page so input bar stays visible
+  const footer = document.querySelector('.site-footer');
+  if (footer) footer.style.display = p === 'chat' ? 'none' : '';
 }
 
 function requireAuth(fn) {
@@ -1969,13 +1973,17 @@ async function openChat(userId, name, avatar, role) {
         <div id="chat-status" style="font-size:.75rem;color:${Chat?.isOnline(userId) ? 'var(--success)' : 'var(--text3)'}">● ${Chat?.isOnline(userId) ? 'Online' : 'Offline'}</div>
       </div>
       <div style="display:flex;gap:.5rem">
-        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','${avatar}','audio')" style="padding:.35rem .6rem;font-size:.85rem">🎵</button>
+        <button class="btn btn-outline btn-sm" title="Audio Call" onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','${avatar}','audio')" style="padding:.35rem .6rem;font-size:.85rem">📞</button>
         <button class="btn btn-primary btn-sm" title="Video Call"  onclick="WebRTCCall.start(${userId},'${name.replace(/'/g,"\\'")}','${avatar}','video')" style="padding:.35rem .6rem;font-size:.85rem">📹</button>
       </div>
     </div>
     <div class="chat-messages" id="chat-messages"><div class="spinner"></div></div>
+    <button class="chat-scroll-btn" id="chat-scroll-btn" title="Scroll to bottom" onclick="scrollChatToBottom(document.getElementById('chat-messages'))">↓</button>
     <div class="typing-indicator" id="typing-indicator"></div>
     <div class="chat-input-area">
+      <input type="file" id="img-pick" accept="image/*" style="display:none" onchange="sendImageMsg(this,'chat-messages',chatOtherId)"/>
+      <button class="chat-media-btn" title="Send image" onclick="document.getElementById('img-pick').click()">📷</button>
+      <button class="chat-media-btn" id="voice-btn" title="Record voice message" onclick="toggleVoice('chat-messages',chatOtherId)">🎙️</button>
       <input class="chat-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){sendMsg();event.preventDefault()}" oninput="emitTyping()"/>
       <button class="chat-send" onclick="sendMsg()">▶</button>
     </div>
@@ -1983,6 +1991,7 @@ async function openChat(userId, name, avatar, role) {
 
   // Load history
   const msgsEl = document.getElementById('chat-messages');
+  setupScrollButton(msgsEl, 'chat-scroll-btn');
   try {
     const msgs = await API.messages(userId);
     if (!msgs.length) { msgsEl.innerHTML = '<div class="empty-state" style="padding:2rem">Send a message to start the conversation</div>'; }
@@ -2016,19 +2025,90 @@ function sendMsg() {
   if (!txt || !chatOtherId) return;
   inp.value = '';
 
-  const sent = Chat?.send(chatOtherId, txt);
-  if (!sent) {
-    // Fallback to REST
-    API.sendMsg(chatOtherId, txt).then(msg => {
-      const msgsEl = document.getElementById('chat-messages');
-      msgsEl.innerHTML += renderMessage(msg, Auth.getUser().id);
-      scrollChatToBottom(msgsEl);
-    }).catch(e => showToast(e.message, 'error'));
+  const user   = Auth.getUser();
+  const msgsEl = document.getElementById('chat-messages');
+  if (msgsEl) {
+    const empty = msgsEl.querySelector('.empty-state');
+    if (empty) empty.remove();
+    msgsEl.innerHTML += renderMessage({ sender_id: user.id, receiver_id: chatOtherId, content: txt, created_at: new Date().toISOString() }, user.id);
+    scrollChatToBottom(msgsEl);
   }
+
+  if (!Chat?.send(chatOtherId, txt)) {
+    API.sendMsg(chatOtherId, txt).catch(e => showToast(e.message, 'error'));
+  }
+  loadConversations();
 }
 
 function emitTyping() {
   if (chatOtherId && Chat) Chat.emitTyping(chatOtherId);
+}
+
+function sendImageMsg(input, msgsElId, toId) {
+  const file = input.files[0];
+  if (!file || !toId) return;
+  input.value = '';
+  if (file.size > 8 * 1024 * 1024) return showToast('Image too large (max 8 MB)', 'error');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 900;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      sendMediaContent(canvas.toDataURL('image/jpeg', 0.8), msgsElId, toId);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+let _mediaRecorder = null, _audioChunks = [], _voiceMsgsElId = null, _voiceToId = null;
+function toggleVoice(msgsElId, toId) {
+  if (_mediaRecorder && _mediaRecorder.state === 'recording') {
+    _mediaRecorder.stop();
+  } else {
+    _voiceMsgsElId = msgsElId;
+    _voiceToId = toId;
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      _audioChunks = [];
+      _mediaRecorder = new MediaRecorder(stream);
+      _mediaRecorder.ondataavailable = e => _audioChunks.push(e.data);
+      _mediaRecorder.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(_audioChunks, { type: 'audio/webm' });
+        const r = new FileReader();
+        r.onload = (e) => sendMediaContent(e.target.result, _voiceMsgsElId, _voiceToId);
+        r.readAsDataURL(blob);
+        const btn = document.getElementById('voice-btn');
+        if (btn) btn.textContent = '🎙️';
+      };
+      _mediaRecorder.start();
+      const btn = document.getElementById('voice-btn');
+      if (btn) btn.textContent = '⏹️';
+    }).catch(() => showToast('Microphone access denied', 'error'));
+  }
+}
+
+function sendMediaContent(dataUrl, msgsElId, toId) {
+  const user = Auth.getUser();
+  const msgsEl = document.getElementById(msgsElId);
+  if (msgsEl) {
+    const empty = msgsEl.querySelector('.empty-state');
+    if (empty) empty.remove();
+    msgsEl.innerHTML += renderMessage({ sender_id: user.id, receiver_id: toId, content: dataUrl, created_at: new Date().toISOString() }, user.id);
+    scrollChatToBottom(msgsEl);
+  }
+  if (!Chat?.send(toId, dataUrl)) {
+    API.sendMsg(toId, dataUrl).catch(e => showToast(e.message, 'error'));
+  }
+  loadConversations();
 }
 
 function startChatWithDoctor() {
@@ -2042,12 +2122,12 @@ function setupChatListener() {
   Chat.onMessage = (msg) => {
     const msgsEl = document.getElementById('chat-messages');
     const user   = Auth.getUser();
-    if (msgsEl && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
+    if (msgsEl && msg.sender_id !== user.id && (msg.sender_id === chatOtherId || msg.receiver_id === chatOtherId)) {
       const empty = msgsEl.querySelector('.empty-state');
       if (empty) empty.remove();
       msgsEl.innerHTML += renderMessage(msg, user.id);
       scrollChatToBottom(msgsEl);
-      if (msg.sender_id === chatOtherId && Chat) Chat.markRead(chatOtherId);
+      if (Chat) Chat.markRead(chatOtherId);
     }
     if (msg.sender_id !== user.id) {
       loadConversations();
